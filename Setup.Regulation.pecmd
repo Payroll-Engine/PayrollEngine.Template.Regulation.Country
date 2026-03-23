@@ -1,0 +1,2 @@
+### Regulation structure only (no data) ###
+PayrollImport Regulation/{CC}.{RegulationName}.{YYYY}.json

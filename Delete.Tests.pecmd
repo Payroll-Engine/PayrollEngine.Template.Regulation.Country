@@ -1,0 +1,3 @@
+### removes test payroll and payrun without deleting the regulation ###
+PayrunDelete {CC}.Payrun /tenantidentifier:{CC}.{RegulationName} /trydelete
+PayrollDelete {CC}.Payroll /tenantidentifier:{CC}.{RegulationName} /trydelete

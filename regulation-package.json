@@ -1,0 +1,14 @@
+{
+  "packageId": "{Provider}.Regulation.{CC}.{RegulationName}",
+  "regulationName": "{CC}.{RegulationName}",
+  "version": "1.0.0-beta.dev",
+  "baseRegulations": [],
+  "installFiles": [
+    "Regulation/{CC}.{RegulationName}.{YYYY}.json",
+    "Regulation/{CC}.{RegulationName}.Scripts.{YYYY}.json",
+    "Regulation/{CC}.{RegulationName}.Collectors.{YYYY}.json",
+    "Regulation/{CC}.{RegulationName}.Cases.{YYYY}.json",
+    "Regulation/{CC}.{RegulationName}.WageTypes.{YYYY}.json",
+    "Regulation/{CC}.{RegulationName}.Data.Tax.{YYYY}.json"
+  ]
+}

@@ -1,0 +1,161 @@
+name: Release
+
+# Triggered automatically when Directory.Build.props changes on main.
+# Skips silently if the version ends with ".dev" or the tag already exists.
+# Can also be triggered manually via workflow_dispatch — version is always
+# read from Directory.Build.props, never entered as an input.
+#
+# Required secret: PAT_DISPATCH
+#   Classic PAT with scopes: repo, workflow, write:packages, read:packages
+#   Settings → Secrets → Actions → New repository secret
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - Directory.Build.props
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  DOTNET_VERSION: '10.0.x'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_DISPATCH }}
+          fetch-depth: 0
+
+      # ── Read version from Directory.Build.props ──────────────────────────
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(grep -oP '(?<=<Version>)[^<]+' Directory.Build.props)
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Version: ${VERSION}"
+
+          if [[ "${VERSION}" == *".dev"* ]]; then
+            echo "is_dev=true" >> $GITHUB_OUTPUT
+            echo "⏭️ Development version — skipping release"
+          else
+            echo "is_dev=false" >> $GITHUB_OUTPUT
+            if [[ "${VERSION}" == *-* ]]; then
+              echo "is_prerelease=true" >> $GITHUB_OUTPUT
+            else
+              echo "is_prerelease=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      # ── Version guard — idempotent skip if tag already exists ────────────
+      - name: Version guard
+        if: steps.version.outputs.is_dev != 'true'
+        id: guard
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PAT_DISPATCH }}
+          script: |
+            const version = '${{ steps.version.outputs.version }}';
+            const tag = `v${version}`;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            // Check Git tag
+            try {
+              await github.rest.git.getRef({ owner, repo, ref: `tags/${tag}` });
+              console.log(`⏭️ Tag '${tag}' already exists — skipping release`);
+              core.setOutput('skip', 'true');
+              return;
+            } catch (e) {
+              if (e.status !== 404) throw e;
+            }
+
+            // Check GitHub Release
+            try {
+              await github.rest.repos.getReleaseByTag({ owner, repo, tag });
+              console.log(`⏭️ Release '${tag}' already exists — skipping release`);
+              core.setOutput('skip', 'true');
+              return;
+            } catch (e) {
+              if (e.status !== 404) throw e;
+            }
+
+            console.log(`✅ Version ${version} is clean — proceeding`);
+            core.setOutput('skip', 'false');
+
+      # ── Sync regulation-package.json version ─────────────────────────────
+      - name: Sync regulation-package.json
+        if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          if [ -f regulation-package.json ]; then
+            if command -v jq &>/dev/null; then
+              jq --arg v "$VERSION" '.version = $v' regulation-package.json \
+                > regulation-package.tmp.json && mv regulation-package.tmp.json regulation-package.json
+              echo "✅ regulation-package.json version set to ${VERSION}"
+            else
+              sed -i "s|\"version\": \"[^\"]*\"|\"version\": \"${VERSION}\"|" regulation-package.json
+              echo "✅ regulation-package.json version set to ${VERSION} (sed)"
+            fi
+          fi
+
+      # ── Build ─────────────────────────────────────────────────────────────
+      - name: Setup .NET
+        if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Configure GitHub Packages
+        if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        run: |
+          # Remove local dev source (not available in CI)
+          dotnet nuget remove source PayrollEngine 2>/dev/null || true
+          dotnet nuget add source \
+            "https://nuget.pkg.github.com/Payroll-Engine/index.json" \
+            --name github \
+            --username github-actions \
+            --password ${{ secrets.PAT_DISPATCH }} \
+            --store-password-in-clear-text
+
+      - name: Restore
+        if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        run: dotnet restore
+
+      - name: Build
+        if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Pack
+        if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        run: dotnet pack --configuration Release --no-build --output ./nupkgs
+
+      # ── Publish to GitHub Packages ────────────────────────────────────────
+      # Package visibility inherits from the repository:
+      #   public repo  → public package  (accessible without authentication)
+      #   private repo → private package (requires read:packages PAT)
+      - name: Publish to GitHub Packages
+        if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        run: |
+          dotnet nuget push ./nupkgs/*.nupkg \
+            --source "https://nuget.pkg.github.com/Payroll-Engine/index.json" \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --skip-duplicate
+
+      # ── Create GitHub Release with .nupkg as asset ───────────────────────
+      # The .nupkg asset enables direct URL installation via:
+      #   InstallRegulationPackage <release-asset-url> <tenant>
+      - name: Create GitHub Release
+        if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          prerelease: ${{ steps.version.outputs.is_prerelease }}
+          generate_release_notes: true
+          files: ./nupkgs/*.nupkg

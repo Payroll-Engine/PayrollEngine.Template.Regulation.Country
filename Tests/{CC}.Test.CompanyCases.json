@@ -1,0 +1,32 @@
+{
+  "$schema": "../Schemas/PayrollEngine.Exchange.schema.json",
+  "createdObjectDate": "{YYYY}-01-01T00:00:00.0Z",
+  "tenants": [
+    {
+      "identifier": "{CC}.{RegulationName}",
+      "updateMode": "NoUpdate",
+      "payrolls": [
+        {
+          "name": "{CC}.Payroll",
+          "updateMode": "NoUpdate",
+          "cases": [
+            {
+              "userIdentifier": "{cc}.test@{cc}.test",
+              "divisionName": "{CC}.Division",
+              "case": {
+                "caseName": "{CC}.EmployerSettings",
+                "values": [
+                  {
+                    "caseFieldName": "{CC}.TaxRegistration",
+                    "value": "TAX-000000001",
+                    "start": "{YYYY}-01-01T00:00:00.0Z"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

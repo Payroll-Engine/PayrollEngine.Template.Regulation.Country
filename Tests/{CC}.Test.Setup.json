@@ -1,0 +1,49 @@
+{
+  "$schema": "../Schemas/PayrollEngine.Exchange.schema.json",
+  "createdObjectDate": "{YYYY}-01-01T00:00:00.0Z",
+  "tenants": [
+    {
+      "identifier": "{CC}.{RegulationName}",
+      "culture": "{cc}-{CC}",
+      "users": [
+        {
+          "identifier": "{cc}.test@{cc}.test",
+          "firstName": "Test",
+          "lastName": "Admin",
+          "culture": "{cc}-{CC}",
+          "userType": "TenantAdministrator"
+        }
+      ],
+      "divisions": [
+        {
+          "name": "{CC}.Division",
+          "culture": "{cc}-{CC}"
+        }
+      ],
+      "employees": [
+        {
+          "identifier": "test.employee@{cc}.test",
+          "firstName": "Test",
+          "lastName": "Employee",
+          "divisions": [ "{CC}.Division" ]
+        }
+      ],
+      "payrolls": [
+        {
+          "name": "{CC}.Payroll",
+          "divisionName": "{CC}.Division",
+          "layers": [
+            { "level": 1, "priority": 1, "regulationName": "{CC}.{RegulationName}" },
+            { "level": 1, "priority": 2, "regulationName": "{CC}.{RegulationName}.Data.Tax" }
+          ]
+        }
+      ],
+      "payruns": [
+        {
+          "name": "{CC}.Payrun",
+          "payrollName": "{CC}.Payroll"
+        }
+      ]
+    }
+  ]
+}

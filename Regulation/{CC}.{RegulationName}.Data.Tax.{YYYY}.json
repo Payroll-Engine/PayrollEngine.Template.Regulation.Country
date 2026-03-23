@@ -1,0 +1,46 @@
+{
+  "$schema": "../Schemas/PayrollEngine.Exchange.schema.json",
+  "createdObjectDate": "{YYYY}-01-01T00:00:00.0Z",
+  "tenants": [
+    {
+      "identifier": "{CC}.{RegulationName}",
+      "updateMode": "NoUpdate",
+      "regulations": [
+        {
+          "name": "{CC}.{RegulationName}.Data.Tax",
+          "namespace": "{CC}",
+          "baseRegulations": [ "{CC}.{RegulationName}" ],
+          "updateMode": "NoUpdate",
+          "description": "{CC} tax parameters {YYYY}",
+          "descriptionLocalizations": { "{cc}": "{CC} belastingparameters {YYYY}" },
+          "validFrom": "{YYYY}-01-01T00:00:00Z",
+          "lookups": [
+            {
+              "name": "TaxParameter",
+              "description": "Income tax parameters {YYYY} — replace with official statutory values",
+              "values": [
+                {
+                  "key": "{YYYY}",
+                  "valueObject": {
+                    "Rate": 0.30,
+                    "Threshold": 10000
+                  }
+                }
+              ]
+            },
+            {
+              "name": "TaxBrackets",
+              "description": "Progressive income tax brackets {YYYY}",
+              "values": [
+                { "rangeValue": 0,     "value": "0.00" },
+                { "rangeValue": 10000, "value": "0.20" },
+                { "rangeValue": 50000, "value": "0.30" },
+                { "rangeValue": 150000,"value": "0.40" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

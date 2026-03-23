@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>{Provider}.Regulation.{CC}.{RegulationName}</PackageId>
+		<Description>{CC} country payroll regulation for Payroll Engine — {RegulationName}</Description>
+		<PackageTags>payrollengine;regulation;country-regulation;country-{cc}</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<!-- Embedded resources: DLL contains JSON + scripts for Roslyn / Client.Scripting -->
+	<ItemGroup>
+		<EmbeddedResource Include="Regulation\**\*.json" />
+		<EmbeddedResource Include="Scripts\**\*.cs" />
+		<EmbeddedResource Include="Tests\**\*.json" />
+		<EmbeddedResource Include="Schemas\**\*" />
+	</ItemGroup>
+
+	<!-- Exclude scripts from C# compilation — they are Roslyn scripts, not compilable source -->
+	<ItemGroup>
+		<Compile Remove="Scripts\**\*.cs" />
+		<Compile Remove="Reports\**\*.cs" />
+	</ItemGroup>
+
+	<!-- Package content: regulation/ folder in .nupkg for InstallRegulationPackage -->
+	<ItemGroup>
+		<None Include="regulation-package.json">
+			<Pack>True</Pack>
+			<PackagePath>regulation/</PackagePath>
+		</None>
+		<None Include="Regulation\**\*.json">
+			<Pack>True</Pack>
+			<PackagePath>regulation/Regulation/</PackagePath>
+		</None>
+		<None Include="Scripts\**\*.cs">
+			<Pack>True</Pack>
+			<PackagePath>regulation/Scripts/</PackagePath>
+		</None>
+		<None Include="Reports\**\*.cs">
+			<Pack>True</Pack>
+			<PackagePath>regulation/Reports/</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Reports\**\*.cs" />
+		<EmbeddedResource Include="Reports\**\*.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="PayrollEngine.Client.Scripting" Version="0.10.0-beta.dev" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+</Project>

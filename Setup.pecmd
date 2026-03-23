@@ -1,0 +1,11 @@
+### Setup {CC}.{RegulationName} — full import ###
+### 1. Regulation structure
+PayrollImport Regulation/{CC}.{RegulationName}.{YYYY}.json
+### 2. Scripts (must be before Cases and WageTypes)
+PayrollImport Regulation/{CC}.{RegulationName}.Scripts.{YYYY}.json
+### 3. Objects
+PayrollImport Regulation/{CC}.{RegulationName}.Collectors.{YYYY}.json
+PayrollImport Regulation/{CC}.{RegulationName}.Cases.{YYYY}.json
+PayrollImport Regulation/{CC}.{RegulationName}.WageTypes.{YYYY}.json
+### 4. Data regulations
+PayrollImport Regulation/{CC}.{RegulationName}.Data.Tax.{YYYY}.json
