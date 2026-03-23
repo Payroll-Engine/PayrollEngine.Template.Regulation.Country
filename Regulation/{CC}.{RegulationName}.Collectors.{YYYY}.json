@@ -15,21 +15,21 @@
               "name": "GrossIncome",
               "nameLocalizations": { "en": "Gross Income" },
               "description": "Gross income accumulator",
-              "descriptionLocalizations": { "{cc}": "Bruto inkomen accumulator" },
+              "descriptionLocalizations": { "{PrimaryLanguage}": "Bruto inkomen accumulator" },
               "clusters": [ "{CC}" ]
             },
             {
               "name": "Deductions",
               "nameLocalizations": { "en": "Deductions" },
               "description": "Employee deductions accumulator",
-              "descriptionLocalizations": { "{cc}": "Inhoudingen werknemer accumulator" },
+              "descriptionLocalizations": { "{PrimaryLanguage}": "Inhoudingen werknemer accumulator" },
               "clusters": [ "{CC}" ]
             },
             {
               "name": "EmployerCosts",
               "nameLocalizations": { "en": "Employer Costs" },
               "description": "Employer costs accumulator",
-              "descriptionLocalizations": { "{cc}": "Werkgeverslasten accumulator" },
+              "descriptionLocalizations": { "{PrimaryLanguage}": "Werkgeverslasten accumulator" },
               "clusters": [ "{CC}" ]
             }
           ]

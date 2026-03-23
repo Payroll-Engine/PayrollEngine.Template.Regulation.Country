@@ -4,20 +4,20 @@
   "tenants": [
     {
       "identifier": "{CC}.{RegulationName}",
-      "culture": "{cc}-{CC}",
+      "culture": "{PrimaryLanguage}-{CC}",
       "users": [
         {
           "identifier": "{cc}.test@{cc}.test",
           "firstName": "Test",
           "lastName": "Admin",
-          "culture": "{cc}-{CC}",
+          "culture": "{PrimaryLanguage}-{CC}",
           "userType": "TenantAdministrator"
         }
       ],
       "divisions": [
         {
           "name": "{CC}.Division",
-          "culture": "{cc}-{CC}"
+          "culture": "{PrimaryLanguage}-{CC}"
         }
       ],
       "employees": [

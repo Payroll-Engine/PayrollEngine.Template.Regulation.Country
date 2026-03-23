@@ -12,10 +12,17 @@ Replace every occurrence of these placeholders throughout all files:
 | Placeholder | Example | Description |
 |---|---|---|
 | `{CC}` | `DE` | ISO-3166 alpha-2 country code, uppercase |
-| `{cc}` | `de` | ISO-3166 alpha-2 country code, lowercase (for GitHub topics) |
+| `{cc}` | `de` | ISO-3166 alpha-2 country code, lowercase (for GitHub topics, identifiers) |
 | `{RegulationName}` | `Lohnsteuer` | Regulation name, PascalCase, no spaces |
 | `{Provider}` | `Acme` | Your organisation / GitHub account name |
 | `{YYYY}` | `2026` | Tax year |
+| `{PrimaryLanguage}` | `de` | ISO-639-1 language code of the regulation's primary language |
+
+> **`{cc}` vs `{PrimaryLanguage}`:** These are different placeholders.
+> `{cc}` is the ISO-3166 country code (lowercase) — used in identifiers and GitHub topics.
+> `{PrimaryLanguage}` is the ISO-639-1 language code — used as key in `descriptionLocalizations` and `culture`.
+> For most countries they differ: BE → `{cc}` = `be`, `{PrimaryLanguage}` = `nl` (or `fr`).
+> For NL they happen to be equal: `{cc}` = `nl`, `{PrimaryLanguage}` = `nl`.
 
 ---
 
@@ -32,11 +39,12 @@ Add GitHub Topics: `payrollengine`, `regulation`, `country-regulation`, `country
 ### 2. Replace placeholders
 Find & replace in all files:
 ```
-{CC}             → DE
-{RegulationName} → Lohnsteuer
-{cc}             → de
-{Provider}       → Acme
-{YYYY}           → 2026
+{CC}               → DE
+{RegulationName}   → Lohnsteuer
+{cc}               → de
+{Provider}         → Acme
+{YYYY}             → 2026
+{PrimaryLanguage}  → de
 ```
 
 Rename files accordingly:

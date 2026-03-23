@@ -16,7 +16,7 @@
               "name": "MonthlySalary",
               "nameLocalizations": { "en": "Monthly Salary" },
               "description": "Gross monthly salary",
-              "descriptionLocalizations": { "{cc}": "Bruto maandsalaris" },
+              "descriptionLocalizations": { "{PrimaryLanguage}": "Bruto maandsalaris" },
               "clusters": [ "{CC}" ],
               "valueActions": [ "^^MonthlySalary" ],
               "collectors": [ "GrossIncome" ]
@@ -26,7 +26,7 @@
               "name": "GrossWage",
               "nameLocalizations": { "en": "Gross Wage" },
               "description": "Gross wage total (GrossIncome collector)",
-              "descriptionLocalizations": { "{cc}": "Bruto loon totaal" },
+              "descriptionLocalizations": { "{PrimaryLanguage}": "Bruto loon totaal" },
               "clusters": [ "{CC}" ],
               "valueActions": [ "^&GrossIncome" ]
             },
@@ -35,7 +35,7 @@
               "name": "TaxWithheld",
               "nameLocalizations": { "en": "Tax Withheld" },
               "description": "Income tax withheld — implement with BerekenBelasting custom action",
-              "descriptionLocalizations": { "{cc}": "Ingehouden belasting" },
+              "descriptionLocalizations": { "{PrimaryLanguage}": "Ingehouden belasting" },
               "clusters": [ "{CC}" ],
               "valueActions": [ "BerekenBelasting('{CC}.MonthlySalary')" ],
               "collectors": [ "Deductions" ]
@@ -45,7 +45,7 @@
               "name": "NetSalary",
               "nameLocalizations": { "en": "Net Salary" },
               "description": "Net salary (GrossIncome minus Deductions)",
-              "descriptionLocalizations": { "{cc}": "Nettoloon" },
+              "descriptionLocalizations": { "{PrimaryLanguage}": "Nettoloon" },
               "clusters": [ "{CC}" ],
               "valueActions": [ "^&GrossIncome - ^&Deductions" ]
             }

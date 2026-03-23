@@ -11,7 +11,7 @@
           "sharedRegulation": true,
           "description": "{CC} country payroll regulation — {RegulationName}",
           "descriptionLocalizations": {
-            "{cc}": "{CC} land loonregulatie — {RegulationName}"
+            "{PrimaryLanguage}": "{CC} land loonregulatie — {RegulationName}"
           },
           "validFrom": "{YYYY}-01-01T00:00:00Z"
         }

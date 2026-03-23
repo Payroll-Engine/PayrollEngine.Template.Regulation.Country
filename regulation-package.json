@@ -1,7 +1,7 @@
 {
   "packageId": "{Provider}.Regulation.{CC}.{RegulationName}",
   "regulationName": "{CC}.{RegulationName}",
-  "version": "1.0.0-beta.dev",
+  "version": "{YYYY}.1-beta.dev",
   "baseRegulations": [],
   "installFiles": [
     "Regulation/{CC}.{RegulationName}.{YYYY}.json",
