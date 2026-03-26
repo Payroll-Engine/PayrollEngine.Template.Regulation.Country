@@ -8,7 +8,6 @@
     "Regulation/{CC}.{RegulationName}.Scripts.{YYYY}.json",
     "Regulation/{CC}.{RegulationName}.Collectors.{YYYY}.json",
     "Regulation/{CC}.{RegulationName}.Cases.{YYYY}.json",
-    "Regulation/{CC}.{RegulationName}.WageTypes.{YYYY}.json",
-    "Regulation/{CC}.{RegulationName}.Data.Tax.{YYYY}.json"
+    "Regulation/{CC}.{RegulationName}.WageTypes.{YYYY}.json"
   ]
 }

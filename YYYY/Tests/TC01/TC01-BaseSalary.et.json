@@ -17,7 +17,12 @@
               "case": {
                 "caseName": "{CC}.Salary",
                 "values": [
-                  { "caseFieldName": "{CC}.MonthlySalary", "value": "3000", "start": "{YYYY}-01-01T00:00:00.0Z" }
+                  {
+                    "caseFieldName": "{CC}.BaseSalary",
+                    "value": "3000",
+                    "start": "{YYYY}-01-01T00:00:00.0Z",
+                    "created": "{YYYY}-01-01T00:10:00.0Z"
+                  }
                 ]
               }
             },
@@ -28,7 +33,12 @@
               "case": {
                 "caseName": "{CC}.Employment",
                 "values": [
-                  { "caseFieldName": "{CC}.ContractType", "value": "Permanent", "start": "{YYYY}-01-01T00:00:00.0Z" }
+                  {
+                    "caseFieldName": "{CC}.ContractType",
+                    "value": "Permanent",
+                    "start": "{YYYY}-01-01T00:00:00.0Z",
+                    "created": "{YYYY}-01-01T00:10:01.0Z"
+                  }
                 ]
               }
             }
@@ -44,6 +54,7 @@
           "periodStart": "{YYYY}-01-01T00:00:00.0Z",
           "evaluationDate": "{YYYY}-02-01T00:00:00.0Z",
           "reason": "TC01 - Base salary, standard tax",
+          "storeEmptyResults": true,
           "employeeIdentifiers": [ "test.employee@{cc}.test" ]
         }
       ],
@@ -53,12 +64,12 @@
           "employeeIdentifier": "test.employee@{cc}.test",
           "wageTypeResults": [
             { "wageTypeNumber": 1000, "value": 3000.00 },
-            { "wageTypeNumber": 5100, "value": 175.00 },
-            { "wageTypeNumber": 6500, "value": 2825.00 }
+            { "wageTypeNumber": 5100, "value": 0.00 },
+            { "wageTypeNumber": 6500, "value": 0.00 }
           ],
           "collectorResults": [
             { "collectorName": "{CC}.GrossIncome", "value": 3000.00 },
-            { "collectorName": "{CC}.Deductions",  "value": 175.00 }
+            { "collectorName": "{CC}.Deductions",  "value": 0.00 }
           ]
         }
       ]

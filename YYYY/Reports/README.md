@@ -1,4 +1,4 @@
-# Reports
+# Reports — {CC}.{RegulationName}
 
 Place one subfolder per report here. Each report requires:
 
@@ -27,12 +27,14 @@ Reports/{ReportName}/
 5. Add template block to Report.json → Run Import.pecmd again
 6. Run Report.Pdf.pecmd — verify output
 7. Write README.md
+8. Add Import.pecmd line to Reports/Setup.Reports.pecmd
+9. Add row to the Reports table in README.md
 ```
 
 ## Key rules
 
-- `Report.json` → `name`: short name without namespace prefix
-- `ReportBuild` / `Report` pecmd → `report:`: fully qualified (`{CC}.ReportName`)
+- `Report.json` → `name`: **short name** without namespace prefix
+- `ReportBuild` / `Report` pecmd → `report:`: **fully qualified** (`{CC}.ReportName`)
 - `[ReportEndScript]` → `reportName`: short name — required for import
 - Namespace prefix (`{CC}.`) must be stripped in `ReportEndFunction.cs`
   before passing the DataSet to FastReport

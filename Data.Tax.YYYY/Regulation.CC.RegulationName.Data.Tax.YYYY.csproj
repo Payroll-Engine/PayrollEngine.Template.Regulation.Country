@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>{Provider}.Regulation.{CC}.{RegulationName}.Data.Tax</PackageId>
+		<Description>{CC} {RegulationName} data regulation — tax rates and parameters {YYYY}</Description>
+		<PackageTags>payrollengine;regulation;data-regulation;country-{cc}</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Regulation\**\*.json" />
+		<EmbeddedResource Include="Schemas\**\*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="regulation-package.json">
+			<Pack>True</Pack>
+			<PackagePath>regulation/</PackagePath>
+		</None>
+		<None Include="Regulation\**\*.json">
+			<Pack>True</Pack>
+			<PackagePath>regulation/Regulation/</PackagePath>
+		</None>
+		<None Include="README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<!-- publish package -->
+	<Target Name="PublishPackage" AfterTargets="Pack" Condition="exists('$(PayrollEnginePackageDir)')">
+		<ItemGroup>
+			<NuGetPackage Include="$(MSBuildProjectDirectory)\bin\$(Configuration)\$(PackageId).*.nupkg" />
+		</ItemGroup>
+		<Message Importance="High" Text="Publish package..." />
+		<Copy SourceFiles="@(NuGetPackage)"
+		      DestinationFolder="$(PayrollEnginePackageDir)" />
+	</Target>
+
+</Project>

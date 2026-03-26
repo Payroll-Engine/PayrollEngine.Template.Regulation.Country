@@ -1,0 +1,1 @@
+RegulationDelete {CC}.{RegulationName}.Data.Tax /tenantidentifier:{CC}.{RegulationName} /trydelete

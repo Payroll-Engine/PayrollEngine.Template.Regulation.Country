@@ -1,3 +1,6 @@
+### cleanup ###
+Delete.pecmd
+#
 ### Setup {CC}.{RegulationName} — full import ###
 ### 1. Regulation structure
 PayrollImport Regulation/{CC}.{RegulationName}.{YYYY}.json
@@ -8,4 +11,7 @@ PayrollImport Regulation/{CC}.{RegulationName}.Collectors.{YYYY}.json
 PayrollImport Regulation/{CC}.{RegulationName}.Cases.{YYYY}.json
 PayrollImport Regulation/{CC}.{RegulationName}.WageTypes.{YYYY}.json
 ### 4. Data regulations
-PayrollImport Regulation/{CC}.{RegulationName}.Data.Tax.{YYYY}.json
+PayrollImport ../Data.Tax.{YYYY}/Regulation/{CC}.{RegulationName}.Data.Tax.{YYYY}.json
+### 5. Test tenant
+PayrollImport Tests/{CC}.Test.Setup.json
+PayrollImport Tests/{CC}.Test.CompanyCases.json

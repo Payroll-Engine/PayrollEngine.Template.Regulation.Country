@@ -1,0 +1,9 @@
+{
+  "packageId": "{Provider}.Regulation.{CC}.{RegulationName}.Data.Tax",
+  "regulationName": "{CC}.{RegulationName}.Data.Tax",
+  "version": "{YYYY}.1-beta.dev",
+  "baseRegulations": [ "{CC}.{RegulationName}" ],
+  "installFiles": [
+    "Regulation/{CC}.{RegulationName}.Data.Tax.{YYYY}.json"
+  ]
+}

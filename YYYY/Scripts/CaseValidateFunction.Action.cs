@@ -14,22 +14,23 @@ namespace PayrollEngine.Client.Scripting.Function;
 public partial class CaseValidateFunction
 {
     // -----------------------------------------------------------------------
-    // Example: ValidateId — replace with actual statutory ID validation
+    // {CC}ValidateNationalId — replace with actual statutory ID validation
     // -----------------------------------------------------------------------
-    [ActionIssue("InvalidId", "(0) contains an invalid ID: (1)", 2)]
-    [ActionParameter("fieldName", "CaseField name of the ID field")]
+    [ActionIssue("InvalidNationalId", "(0) contains an invalid national ID: (1)", 2)]
+    [ActionParameter("fieldName", "CaseField name of the national ID field")]
     [ActionParameter("id", "ID value to validate")]
-    [CaseValidateAction("ValidateId", "Validate statutory ID — replace with {CC}-specific algorithm")]
-    public bool ValidateId(string fieldName, string id)
+    [CaseValidateAction("{CC}ValidateNationalId", "Validate national ID — replace with {CC}-specific algorithm")]
+    public bool {CC}ValidateNationalId(string fieldName, string id)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
-            AddFieldAttributeIssue(fieldName, "InvalidId", fieldName, id ?? string.Empty);
+            AddFieldAttributeIssue(fieldName, "InvalidNationalId", fieldName, id ?? string.Empty);
             return false;
         }
 
         // TODO: implement statutory ID validation (e.g. modulo check)
-        // Example: return ValidateModulo11(id);
+        // Example NL Elfproef: ValidateModulo11(id)
+        // Example BE Rijksregister: ValidateModulo97(id)
         return true;
     }
 }

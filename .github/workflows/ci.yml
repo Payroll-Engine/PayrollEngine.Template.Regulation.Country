@@ -21,6 +21,7 @@ jobs:
 
       - name: Read version
         id: version
+        working-directory: 'YYYY'
         run: |
           VERSION=$(grep -oP '(?<=<Version>)[^<]+' Directory.Build.props)
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
@@ -43,13 +44,17 @@ jobs:
             --store-password-in-clear-text
 
       - name: Restore
+        working-directory: 'YYYY'
         run: dotnet restore
 
       - name: Build
+        working-directory: 'YYYY'
         run: dotnet build --configuration Release --no-restore
 
       - name: Pack
+        working-directory: 'YYYY'
         run: dotnet pack --configuration Release --no-build --output ./nupkgs
 
       - name: List packages
+        working-directory: 'YYYY'
         run: ls -la ./nupkgs/

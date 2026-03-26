@@ -8,7 +8,7 @@
 		<Authors>{Provider}</Authors>
 		<Company>{Provider}</Company>
 		<Copyright>© {YYYY} {Provider}</Copyright>
-		<Product>Payroll Engine Regulation {CC}.{RegulationName}</Product>
+		<Product>Payroll Engine Regulation {CC}.{RegulationName} {YYYY}</Product>
 		<PackageProjectUrl>https://payrollengine.org/</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/{Provider}/Regulation.{CC}.{RegulationName}.git</RepositoryUrl>
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>

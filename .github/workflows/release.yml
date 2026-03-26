@@ -1,9 +1,9 @@
 name: Release
 
-# Triggered automatically when Directory.Build.props changes on main.
+# Triggered automatically when YYYY/Directory.Build.props changes on main.
 # Skips silently if the version ends with ".dev" or the tag already exists.
 # Can also be triggered manually via workflow_dispatch — version is always
-# read from Directory.Build.props, never entered as an input.
+# read from YYYY/Directory.Build.props, never entered as an input.
 #
 # Required secret: PAT_DISPATCH
 #   Classic PAT with scopes: repo, workflow, write:packages, read:packages
@@ -13,7 +13,7 @@ on:
   push:
     branches: [main]
     paths:
-      - Directory.Build.props
+      - 'YYYY/Directory.Build.props'
   workflow_dispatch: {}
 
 permissions:
@@ -32,9 +32,10 @@ jobs:
           token: ${{ secrets.PAT_DISPATCH }}
           fetch-depth: 0
 
-      # ── Read version from Directory.Build.props ──────────────────────────
+      # ── Read version from YYYY/Directory.Build.props ──────────────────────
       - name: Read version
         id: version
+        working-directory: 'YYYY'
         run: |
           VERSION=$(grep -oP '(?<=<Version>)[^<]+' Directory.Build.props)
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
@@ -91,6 +92,7 @@ jobs:
       # ── Sync regulation-package.json version ─────────────────────────────
       - name: Sync regulation-package.json
         if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        working-directory: 'YYYY'
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           if [ -f regulation-package.json ]; then
@@ -125,14 +127,17 @@ jobs:
 
       - name: Restore
         if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        working-directory: 'YYYY'
         run: dotnet restore
 
       - name: Build
         if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        working-directory: 'YYYY'
         run: dotnet build --configuration Release --no-restore
 
       - name: Pack
         if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        working-directory: 'YYYY'
         run: dotnet pack --configuration Release --no-build --output ./nupkgs
 
       # ── Publish to GitHub Packages ────────────────────────────────────────
@@ -141,6 +146,7 @@ jobs:
       #   private repo → private package (requires read:packages PAT)
       - name: Publish to GitHub Packages
         if: steps.version.outputs.is_dev != 'true' && steps.guard.outputs.skip != 'true'
+        working-directory: 'YYYY'
         run: |
           dotnet nuget push ./nupkgs/*.nupkg \
             --source "https://nuget.pkg.github.com/Payroll-Engine/index.json" \
@@ -158,4 +164,4 @@ jobs:
           name: v${{ steps.version.outputs.version }}
           prerelease: ${{ steps.version.outputs.is_prerelease }}
           generate_release_notes: true
-          files: ./nupkgs/*.nupkg
+          files: 'YYYY/nupkgs/*.nupkg'

@@ -1,0 +1,3 @@
+### Setup {CC}.{RegulationName}.Data.Tax {YYYY} ###
+### Requires {CC}.{RegulationName} regulation already installed ###
+PayrollImport Regulation/{CC}.{RegulationName}.Data.Tax.{YYYY}.json

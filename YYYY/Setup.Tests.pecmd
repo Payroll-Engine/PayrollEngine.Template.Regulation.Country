@@ -1,3 +1,3 @@
-### Setup test tenant + company cases ###
+### Test tenant + company cases ###
 PayrollImport Tests/{CC}.Test.Setup.json
 PayrollImport Tests/{CC}.Test.CompanyCases.json

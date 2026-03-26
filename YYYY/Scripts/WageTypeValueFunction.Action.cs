@@ -28,16 +28,16 @@ public partial class WageTypeValueFunction
     }
 
     // -----------------------------------------------------------------------
-    // BerekenBelasting — replace with actual tax calculation
+    // {CC}CalculateTax — replace with actual statutory tax calculation
     // -----------------------------------------------------------------------
     [ActionParameter("monthlySalary", "Fully qualified CaseField name for monthly gross salary")]
-    [WageTypeValueAction("BerekenBelasting", "Income tax — replace with {CC} statutory calculation")]
-    public ActionValue BerekenBelasting(string monthlySalary)
+    [WageTypeValueAction("{CC}CalculateTax", "Income tax — replace with {CC} statutory calculation")]
+    public ActionValue {CC}CalculateTax(string monthlySalary)
     {
         var param = GetLookup<TaxParam>("TaxParameter", PeriodStartYear.ToString());
         if (param == null)
         {
-            LogWarning($"BerekenBelasting: TaxParameter not found for year {PeriodStartYear}");
+            LogWarning($"{CC}CalculateTax: TaxParameter not found for year {PeriodStartYear}");
             return 0m;
         }
 
@@ -46,5 +46,30 @@ public partial class WageTypeValueFunction
         var annualTax = taxableIncome * param.Rate;
 
         return Math.Round(annualTax / PeriodsInCycle, 2);
+    }
+
+    // -----------------------------------------------------------------------
+    // {CC}CalculateProrata — calendar-day prorata factor
+    // -----------------------------------------------------------------------
+    [WageTypeValueAction("{CC}CalculateProrata", "Calendar-day prorata factor from Indienst/Uitdienst dates")]
+    public ActionValue {CC}CalculateProrata()
+    {
+        var indienst = GetCaseValue<DateTime?>("{CC}.Indienst");
+        var uitdienst = GetCaseValue<DateTime?>("{CC}.Uitdienst");
+
+        var periodStart = PeriodStart.Date;
+        var periodEnd = PeriodEnd.Date;
+        var daysInPeriod = (periodEnd - periodStart).Days + 1;
+
+        var from = indienst.HasValue && indienst.Value > periodStart ? indienst.Value.Date : periodStart;
+        var to = uitdienst.HasValue && uitdienst.Value < periodEnd ? uitdienst.Value.Date : periodEnd;
+
+        if (to < from)
+        {
+            return 0m;
+        }
+
+        var activeDays = (to - from).Days + 1;
+        return Math.Round((decimal)activeDays / daysInPeriod, 10);
     }
 }

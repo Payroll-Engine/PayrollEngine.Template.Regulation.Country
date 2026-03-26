@@ -1,0 +1,2 @@
+### Data regulations only ###
+PayrollImport ../Data.Tax.{YYYY}/Regulation/{CC}.{RegulationName}.Data.Tax.{YYYY}.json

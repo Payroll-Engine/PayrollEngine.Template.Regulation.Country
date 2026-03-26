@@ -1,23 +1,22 @@
 {
-  "$schema": "../Schemas/PayrollEngine.Exchange.schema.json",
+  "$schema": "../../Schemas/PayrollEngine.Exchange.schema.json",
   "createdObjectDate": "{YYYY}-01-01T00:00:00.0Z",
   "tenants": [
     {
       "identifier": "{CC}.{RegulationName}",
-      "culture": "{PrimaryLanguage}-{CC}",
       "users": [
         {
           "identifier": "{cc}.test@{cc}.test",
           "firstName": "Test",
-          "lastName": "Admin",
-          "culture": "{PrimaryLanguage}-{CC}",
-          "userType": "TenantAdministrator"
+          "lastName": "User",
+          "culture": "{PrimaryLanguage}"
         }
       ],
       "divisions": [
         {
           "name": "{CC}.Division",
-          "culture": "{PrimaryLanguage}-{CC}"
+          "culture": "{PrimaryLanguage}",
+          "calendar": "Gregorian"
         }
       ],
       "employees": [
@@ -25,7 +24,8 @@
           "identifier": "test.employee@{cc}.test",
           "firstName": "Test",
           "lastName": "Employee",
-          "divisions": [ "{CC}.Division" ]
+          "culture": "{PrimaryLanguage}",
+          "divisionNames": [ "{CC}.Division" ]
         }
       ],
       "payrolls": [

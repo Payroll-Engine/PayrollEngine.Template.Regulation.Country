@@ -1,0 +1,6 @@
+### Regulation structure only (no data, no tests) ###
+PayrollImport Regulation/{CC}.{RegulationName}.{YYYY}.json
+PayrollImport Regulation/{CC}.{RegulationName}.Scripts.{YYYY}.json
+PayrollImport Regulation/{CC}.{RegulationName}.Collectors.{YYYY}.json
+PayrollImport Regulation/{CC}.{RegulationName}.Cases.{YYYY}.json
+PayrollImport Regulation/{CC}.{RegulationName}.WageTypes.{YYYY}.json

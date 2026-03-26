@@ -59,4 +59,14 @@
 		</None>
 	</ItemGroup>
 
+	<!-- publish package -->
+	<Target Name="PublishPackage" AfterTargets="Pack" Condition="exists('$(PayrollEnginePackageDir)')">
+		<ItemGroup>
+			<NuGetPackage Include="$(MSBuildProjectDirectory)\bin\$(Configuration)\$(PackageId).*.nupkg" />
+		</ItemGroup>
+		<Message Importance="High" Text="Publish package..." />
+		<Copy SourceFiles="@(NuGetPackage)"
+		      DestinationFolder="$(PayrollEnginePackageDir)" />
+	</Target>
+
 </Project>

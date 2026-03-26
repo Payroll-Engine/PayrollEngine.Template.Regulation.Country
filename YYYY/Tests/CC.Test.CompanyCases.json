@@ -1,5 +1,5 @@
 {
-  "$schema": "../Schemas/PayrollEngine.Exchange.schema.json",
+  "$schema": "../../Schemas/PayrollEngine.Exchange.schema.json",
   "createdObjectDate": "{YYYY}-01-01T00:00:00.0Z",
   "tenants": [
     {
@@ -14,11 +14,11 @@
               "userIdentifier": "{cc}.test@{cc}.test",
               "divisionName": "{CC}.Division",
               "case": {
-                "caseName": "{CC}.EmployerSettings",
+                "caseName": "{CC}.Configuration",
                 "values": [
                   {
-                    "caseFieldName": "{CC}.TaxRegistration",
-                    "value": "TAX-000000001",
+                    "caseFieldName": "{CC}.EmployerId",
+                    "value": "123456789",
                     "start": "{YYYY}-01-01T00:00:00.0Z"
                   }
                 ]
