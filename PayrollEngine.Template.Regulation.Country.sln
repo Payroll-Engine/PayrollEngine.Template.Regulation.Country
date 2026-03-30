@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "YYYY", "YYYY", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567826}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Regulation.{CC}.{RegulationName}.Tests.Unit.YYYY", "YYYY\Tests.Unit\Regulation.CC.RegulationName.Tests.Unit.YYYY.csproj", "{F1A2B3C4-D5E6-7890-ABCD-123456789031}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Regulation.{CC}.{RegulationName}.YYYY", "YYYY\Regulation.CC.RegulationName.YYYY.csproj", "{C1D2E3F4-A5B6-7890-CDEF-123456789027}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data.Tax.YYYY", "Data.Tax.YYYY", "{D1E2F3A4-B5C6-7890-DEF0-123456789028}"
@@ -22,6 +24,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F1A2B3C4-D5E6-7890-ABCD-123456789031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1A2B3C4-D5E6-7890-ABCD-123456789031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1A2B3C4-D5E6-7890-ABCD-123456789031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1A2B3C4-D5E6-7890-ABCD-123456789031}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C1D2E3F4-A5B6-7890-CDEF-123456789027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C1D2E3F4-A5B6-7890-CDEF-123456789027}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1D2E3F4-A5B6-7890-CDEF-123456789027}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,6 +41,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{F1A2B3C4-D5E6-7890-ABCD-123456789031} = {A1B2C3D4-E5F6-7890-ABCD-EF1234567826}
 		{C1D2E3F4-A5B6-7890-CDEF-123456789027} = {A1B2C3D4-E5F6-7890-ABCD-EF1234567826}
 		{E1F2A3B4-C5D6-7890-EF01-123456789029} = {D1E2F3A4-B5C6-7890-DEF0-123456789028}
 	EndGlobalSection

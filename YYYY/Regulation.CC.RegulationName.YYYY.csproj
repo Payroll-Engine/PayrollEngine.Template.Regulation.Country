@@ -17,10 +17,15 @@
 		<EmbeddedResource Include="Schemas\**\*" />
 	</ItemGroup>
 
-	<!-- Exclude scripts from C# compilation — they are Roslyn scripts, not compilable source -->
+	<!-- Exclude from C# compilation:
+	     - Scripts: Roslyn scripts embedded as resources, not compiled source
+	     - Reports: same
+	     - Tests.Unit: xUnit project lives in a subdirectory — SDK glob would otherwise
+	       pull all *.cs files into this project (CS0246 Xunit, CS0579 duplicate attributes) -->
 	<ItemGroup>
 		<Compile Remove="Scripts\**\*.cs" />
 		<Compile Remove="Reports\**\*.cs" />
+		<Compile Remove="Tests.Unit\**\*.cs" />
 	</ItemGroup>
 
 	<!-- Package content: regulation/ folder in .nupkg for InstallRegulationPackage -->

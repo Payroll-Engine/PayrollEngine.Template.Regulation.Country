@@ -12,6 +12,9 @@
 		<PackageProjectUrl>https://payrollengine.org/</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/{Provider}/Regulation.{CC}.{RegulationName}.git</RepositoryUrl>
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+		<!-- Suppress auto-generated AssemblyInfo — avoids CS0579 duplicate attribute errors
+		     when Tests.Unit inherits this Directory.Build.props as a subdirectory project. -->
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 
 	<PropertyGroup>
