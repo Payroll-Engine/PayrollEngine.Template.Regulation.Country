@@ -1,105 +1,85 @@
-# {CC}.{RegulationName}
+# Regulation.{CC}.{Name}
 
-> **Payroll Engine Country Regulation Template**
-> Replace all `{CC}`, `{RegulationName}`, `{cc}`, `{Provider}` placeholders before use.
-> See [TEMPLATE.md](TEMPLATE.md) for step-by-step setup instructions.
-
-Country payroll regulation for **{CC}** — `{RegulationName}`.
+{Country} payroll regulation for **{Full Legal Name}** — {Year}.
 
 Implemented as a [Payroll Engine](https://github.com/Payroll-Engine) regulation.
+Targets payroll periods from {Year} onwards. Rates and parameters are sourced
+directly from official {AuthorityName} publications.
+
+---
+
+## Status
+
+> **Status:** {e.g. stable / beta / in progress — short note on current phase}
+> **Scope:** {e.g. Régimen General — key components covered in one line}
+> **Certification:** {e.g. SILTRA/Sistema RED — out of scope | not applicable}
 
 ---
 
 ## Scope
 
-| Component | Status | Notes |
-|---|---|---|
-| Base salary (prorata) | ✅ | Calendar-day prorata via Indienst/Uitdienst |
-| Tax withholding | 🔲 | To be implemented |
-| Social insurance employee | 🔲 | To be implemented |
-| Social insurance employer | 🔲 | To be implemented |
-| ID validation | 🔲 | National identifier checksum |
+| Component | Included |
+|:---|:---:|
+| {Component 1} | ✅ |
+| {Component 2} | ✅ |
+| {Component 3 — out of scope} | ❌ |
+| {Component 4 — planned} | 🔜 |
 
 ---
 
-## Regulation Structure
+## Regulation Layers
 
 The regulation is split into a **core layer** (calculation logic) and
 **data layers** (annual rates and parameters). Each data source can be
 updated independently without touching the calculation scripts.
 
 ```
-{CC}.{RegulationName}                  Core — cases, collectors, scripts, wage types
-{CC}.{RegulationName}.Data.Tax         Tax brackets and rates (official statutory source)
+{CC}.{Name}                        Core — logic, cases, wage types, scripts
+{CC}.{Name}.Data.{Source1}         {Description} ({Authority})
+{CC}.{Name}.Data.{Source2}         {Description} ({Authority})
 ```
 
-Annual updates require only new data files with a matching `validFrom`.
-The core regulation and scripts remain unchanged unless the calculation logic itself changes.
+Annual updates require only new data files (e.g. `{CC}.{Name}.Data.{Source1}.{Year+1}.json`)
+with a matching `validFrom`. The core regulation and scripts remain unchanged unless
+the calculation logic itself changes.
+
+| Regulation | Type | Content |
+|:---|:---|:---|
+| `{CC}.{Name}` | Functional | Cases, WageTypes, Collectors, Scripts |
+| `{CC}.{Name}.Data.{Source1}` | Data | {Description} |
+| `{CC}.{Name}.Data.{Source2}` | Data | {Description} |
 
 ---
 
 ## Repository Layout
 
 ```
-Regulation.{CC}.{RegulationName}/
-  .github/
-    workflows/
-      ci.yml               CI build — working-directory: YYYY
-      release.yml          Release trigger on YYYY/Directory.Build.props
-  YYYY/
+Regulation.{CC}.{Name}/
+  {Year}/
     Regulation/
-      {CC}.{RegulationName}.{YYYY}.json
-      {CC}.{RegulationName}.Scripts.{YYYY}.json
-      {CC}.{RegulationName}.Collectors.{YYYY}.json
-      {CC}.{RegulationName}.Cases.{YYYY}.json
-      {CC}.{RegulationName}.WageTypes.{YYYY}.json
+      {CC}.{Name}.Cases.{Year}.json
+      {CC}.{Name}.Collectors.{Year}.json
+      {CC}.{Name}.Scripts.{Year}.json
+      {CC}.{Name}.WageTypes.{Year}.json
     Scripts/
-      WageTypeValueFunction.Action.cs    No-Code custom actions (WageTypeValueAction)
-      CaseValidateFunction.Action.cs     No-Code custom actions (CaseValidateAction)
-    Reports/
-      README.md
-      {ReportName}/
-        Report.json / ReportEndFunction.cs / {ReportName}.frx
-        parameters.json / Import.pecmd / Script.pecmd / Report.Build.pecmd / Report.Pdf.pecmd / README.md
-    Docs/
-      {CC}.{RegulationName}-Analysis.md
-      {CC}.{RegulationName}-NoCodeDesign.md
-      {CC}.{RegulationName}-TestSpec.md
+      WageTypeValueFunction.Action.cs   Custom actions (WageTypeValueAction)
+      CaseValidateFunction.Action.cs    Custom actions (CaseValidateAction)
+      {CC}{Helper1}.cs                  {Description} (also unit-tested)
+      {CC}{Helper2}.cs                  {Description}
     Tests/
-      README.md
       {CC}.Test.Setup.json
       {CC}.Test.CompanyCases.json
-      TC01/
-    Schemas/
-      PayrollEngine.Exchange.schema.json
-    Directory.Build.props
-    regulation-package.json
-    Regulation.{CC}.{RegulationName}.{YYYY}.csproj
-    nuget.config
+      Tests/                            Individual test cases (WT-TC*, GUARD-TC*)
+    Tests.Unit/                         xUnit unit tests for algorithm classes
+    Reports/
+      {ReportFolder1}/
+      {ReportFolder2}/
     Setup.pecmd
-    Setup.Regulation.pecmd
-    Setup.Data.pecmd
-    Setup.Tests.pecmd
     Test.All.pecmd
-    Test.Preview.pecmd
-    Delete.pecmd
-    Delete.Tests.pecmd
-  Data.Tax.YYYY/
-    Regulation/
-      {CC}.{RegulationName}.Data.Tax.{YYYY}.json
-    Schemas/
-      PayrollEngine.Exchange.schema.json
-    Directory.Build.props
-    regulation-package.json
-    Regulation.{CC}.{RegulationName}.Data.Tax.{YYYY}.csproj
-    nuget.config
-    Setup.pecmd
-    Delete.pecmd
-  Regulation.{CC}.{RegulationName}.sln
-  Test.{YYYY}.pecmd
-  README.md
-  TEMPLATE.md
-  .gitignore
+  Data.{Source1}.{Year}/
+  Data.{Source2}.{Year}/
+  Docs/
+  Schemas/
 ```
 
 ---
@@ -108,27 +88,34 @@ Regulation.{CC}.{RegulationName}/
 
 **Collectors:**
 
-| Collector | Description | NetPay formula |
-|---|---|---|
-| `{CC}.GrossIncome` | Gross income — all gross salary components | + |
-| `{CC}.Deductions` | Employee deductions — tax + social insurance | − |
-| `{CC}.EmployerCost` | Employer social costs | informational |
+| Collector | Role | NettoLoon |
+|:---|:---|:---:|
+| `{CC}.{GrossCollector}` | Gross income — all gross salary components | + |
+| `{CC}.{DeductionCollector}` | Employee deductions | − |
+| `{CC}.{EmployerCollector}` | Employer social costs | info |
 
-`NetPay` (WT 6500) = `{CC}.GrossIncome` − `{CC}.Deductions`
+`NettoLoon (WT {nr})` = `{CC}.{GrossCollector}` − `{CC}.{DeductionCollector}`
 
 **Matrix:**
 
-| Nr | Name | GrossIncome | Deductions | EmployerCost | Action / Expression |
-|---:|---|:---:|:---:|:---:|---|
-| 10 | ProrataFactor | | | | `{CC}CalculateProrata` — calendar-day factor |
-| 1000 | BaseSalary | ✓ | | | `^^BaseSalary × ^$10` |
-| 5000 | GrossTotal | | | | `^&GrossIncome` — collector snapshot |
-| 5100 | TaxWithheld | | ✓ | | `{CC}CalculateTax` — annual projection |
-| 6500 | NetPay | | | | `^&GrossIncome − ^&Deductions` |
+| Nr | Name | Gross | Ded | Empl | Action / Expression |
+|---:|:---|:---:|:---:|:---:|:---|
+| 1 | Guard | | | | `{CC}GuardMandatoryFields` — aborts on missing {Field1}/{Field2} |
+| 2 | Guard{X} | | | | `{CC}Guard{X}` — aborts when {Condition} |
+| 10 | {TechnicalWT} | | | | `{ActionName}` — sets `{CC}.{RuntimeValue}` |
+| 1000 | {GrossWT1} | ✓ | | | `{ActionName}` — {short description} |
+| 1100 | {GrossWT2} | ✓ | | | `{expression}` |
+| 5000 | {GrossMirror} | | | | `^&{GrossCollector}` — collector mirror, informational |
+| 5100 | {TaxWT} | | | | `{ActionName}` — {short description} |
+| 5110 | {CreditWT} | | | | `{ActionName}` — negative; {short description} |
+| 5130 | {TaxNet} | | ✓ | | `^${5100} + ^${5110}` |
+| 6500 | NettoLoon | | | | `^&{GrossCollector} − ^&{DeductionCollector}` |
+| 6700 | {EmployerWT1} | | | ✓ | `{ActionName}` — {short description} |
+| 6710 | {EmployerWT2} | | | ✓ | `{ActionName}` — {short description} |
 
-**Notes:**
-- WT 6500 (`NetPay`) must always have a higher number than all component WageTypes
-  to ensure collectors are fully populated at net salary calculation time.
+> **Notes:**
+> - WTs 1–{n} (Guards), {tech WTs}: no collector — runtime setters / control flow.
+> - WTs 5100–5120: no collector — intermediate values summed in WT 5130.
 
 ---
 
@@ -137,15 +124,16 @@ Regulation.{CC}.{RegulationName}/
 ### WageType Actions (`Scripts/WageTypeValueFunction.Action.cs`)
 
 | Action | WT | Description |
-|---|---|---|
-| `{CC}CalculateProrata` | 10 | Calendar-day prorata factor from Indienst/Uitdienst dates |
-| `{CC}CalculateTax` | 5100 | Tax withholding via annual projection |
+|:---|---:|:---|
+| `{CC}GuardMandatoryFields` | 1 | Validates {Field1} > 0, {Field2} set; aborts on failure |
+| `{ActionName}` | {nr} | {short description} |
 
 ### Case Validate Actions (`Scripts/CaseValidateFunction.Action.cs`)
 
 | Action | Case | Description |
-|---|---|---|
-| `{CC}ValidateNationalId` | {CC}.Personal | National ID checksum validation |
+|:---|:---|:---|
+| `{ValidateAction1}` | `{CC}.{Case1}` | {short description} |
+| `{ValidateAction2}` | `{CC}.{Case2}` | {short description} |
 
 ---
 
@@ -153,17 +141,16 @@ Regulation.{CC}.{RegulationName}/
 
 ### Employee Cases
 
-| Case | Fields | Description |
-|---|---|---|
-| `{CC}.Salary` | `{CC}.BaseSalary` | Monthly gross salary |
-| `{CC}.Personal` | `{CC}.NationalId` | National identifier |
-| `{CC}.Employment` | `{CC}.ContractType`, `{CC}.Indienst`, `{CC}.Uitdienst` | Contract type and employment period |
+| Case | Fields | Description | Availability |
+|:---|:---|:---|:---|
+| `{CC}.{Case1}` | `{CC}.{Field1}`, `{CC}.{Field2}` | {Description} | always |
+| `{CC}.{Case2}` | `{CC}.{Field3}` | {Description} | {Condition} is set |
 
 ### Company Cases
 
 | Case | Fields | Description |
-|---|---|---|
-| `{CC}.Configuration` | `{CC}.EmployerId` | Employer registration number |
+|:---|:---|:---|
+| `{CC}.{CompanyCase1}` | `{CC}.{Field1}` | {Description} |
 
 ---
 
@@ -171,73 +158,99 @@ Regulation.{CC}.{RegulationName}/
 
 ```json
 "layers": [
-  { "level": 1, "priority": 1, "regulationName": "{CC}.{RegulationName}" },
-  { "level": 1, "priority": 2, "regulationName": "{CC}.{RegulationName}.Data.Tax" }
+  { "level": 1, "priority": 1, "regulationName": "{CC}.{Name}" },
+  { "level": 1, "priority": 2, "regulationName": "{CC}.{Name}.Data.{Source1}" },
+  { "level": 1, "priority": 3, "regulationName": "{CC}.{Name}.Data.{Source2}" }
 ]
 ```
 
-PE selects the correct regulation version automatically based on the payrun `EvaluationDate`.
-Retro-payruns use historical versions without any manual configuration.
+PE selects the correct regulation version automatically based on the
+payrun `EvaluationDate` — retro-payruns use historical versions without manual config.
 
 ---
 
-## Setup and Testing
+## Sub-Projects
 
-```
-# Full setup (regulation + data + test tenant)
-YYYY/Setup.pecmd
-
-# Run all tests
-YYYY/Test.All.pecmd
-
-# Or use the root shortcut
-Test.YYYY.pecmd
-
-# Cleanup
-YYYY/Delete.pecmd
-```
-
-See [`YYYY/Tests/README.md`](YYYY/Tests/README.md) for the full test index.
+| Folder | Content | Version |
+|:---|:---|:---|
+| `{Year}/` | Functional regulation {Year} | {Year}.1-alpha.dev |
+| `Data.{Source1}.{Year}/` | {Source1} data regulation {Year} | {Year}.1-alpha.dev |
+| `Data.{Source2}.{Year}/` | {Source2} data regulation {Year} | {Year}.1-alpha.dev |
 
 ---
 
-## Reports
+## Quick Start
 
-Reports are located in `YYYY/Reports/`. Each report lives in its own subfolder
-with all required files co-located. See [`YYYY/Reports/README.md`](YYYY/Reports/README.md)
-for the full workflow.
+```pecmd
+# Standard payroll
+Test.{Year}.pecmd
+
+# {Special scenario, if applicable}
+Test.{Scenario}.{Year}.pecmd
+```
+
+### Setup and Testing
+
+```
+# 1 — Import regulation and data
+{Year}/Setup.pecmd
+
+# 2 — Run all tests
+{Year}/Test.All.pecmd
+```
 
 ---
 
 ## Data Sources
 
-| Regulation | Content | Source | Update Cycle |
-|---|---|---|---|
-| `{CC}.{RegulationName}.Data.Tax` | Tax brackets and rates | Official statutory source | Annual |
+| Regulation | Source | Update Cycle |
+|:---|:---|:---|
+| `Data.{Source1}` | {Authority} — *{Publication name}* | Annual ({Month}) |
+| `Data.{Source2}` | {Authority} — *{Publication name}* | Annual ({Month}) |
+| `Data.{Source3}` | {Authority} — *{Publication name}* | Semi-annual (1 Jan + 1 Jul) |
+
+---
+
+## Reports
+
+Reports are independent of the test suite and located in `{Year}/Reports/`.
+Each report lives in its own subfolder with all required files co-located.
+
+| ID | Name | DB Name | Description |
+|:---|:---|:---|:---|
+| R01 | {ReportName1} | `{CC}.{ReportName1}` | {Description — period/YTD/annual} |
+| R02 | {ReportName2} | `{CC}.{ReportName2}` | {Description} |
+
+---
+
+## Annual Update Workflow
+
+See [`{Year}/Docs/{CC}.{Name}-UpdateWorkflow.md`]({Year}/Docs/{CC}.{Name}-UpdateWorkflow.md)
+for the complete year-over-year update process ({key items: rates, brackets, ceilings, etc.}).
 
 ---
 
 ## Known Limitations
 
-### Electronic Filing
-Electronic declaration / submission to tax authorities is not included.
-The regulation provides all calculation inputs required for manual filing.
+### {Limitation Title 1}
+{Description — what is missing, why, and how the gap can be closed if needed.}
+
+### {Limitation Title 2}
+{Description.}
 
 ---
 
-## Documentation
+## Legal Sources
 
-| File | Description |
-|---|---|
-| [`YYYY/Docs/{CC}.{RegulationName}-Analysis.md`](YYYY/Docs/{CC}.{RegulationName}-Analysis.md) | System analysis, regulation design, versioning strategy |
-| [`YYYY/Docs/{CC}.{RegulationName}-NoCodeDesign.md`](YYYY/Docs/{CC}.{RegulationName}-NoCodeDesign.md) | No-Code / Low-Code action specification |
-| [`YYYY/Docs/{CC}.{RegulationName}-TestSpec.md`](YYYY/Docs/{CC}.{RegulationName}-TestSpec.md) | Test case calculations with source references |
-| [`YYYY/Tests/README.md`](YYYY/Tests/README.md) | Test index |
+- {Law/Ordinance 1} — {short description of what it governs}
+- {Law/Ordinance 2} — {short description}
+- {Official Website} — https://{url}
 
 ---
 
 ## See Also
+
 - [Payroll Engine](https://github.com/Payroll-Engine/PayrollEngine)
 - [Country Bootstrap Guide](https://github.com/Payroll-Engine/Regulation.COM.Base/blob/main/Docs/Country-Bootstrap.md)
-- [Consolidation Template](https://github.com/Payroll-Engine/PayrollEngine.Template.Regulation.Country.Consolidation) — template for COM.Base mapping regulation
+- [Country Regulation Template](https://github.com/Payroll-Engine/PayrollEngine.Template.Regulation.Country)
 - [Regulation Deployment](https://payrollengine.org/concepts/regulation-deployment)
