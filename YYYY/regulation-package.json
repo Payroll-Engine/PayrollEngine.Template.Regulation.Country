@@ -7,7 +7,11 @@
     "Regulation/{CC}.{RegulationName}.{YYYY}.json",
     "Regulation/{CC}.{RegulationName}.Scripts.{YYYY}.json",
     "Regulation/{CC}.{RegulationName}.Collectors.{YYYY}.json",
-    "Regulation/{CC}.{RegulationName}.Cases.{YYYY}.json",
-    "Regulation/{CC}.{RegulationName}.WageTypes.{YYYY}.json"
+    "Regulation/{CC}.{RegulationName}.Cases.Company.{YYYY}.json",
+    "Regulation/{CC}.{RegulationName}.Cases.Employee.Core.{YYYY}.json",
+    "Regulation/{CC}.{RegulationName}.WageTypes.Guard.{YYYY}.json",
+    "Regulation/{CC}.{RegulationName}.WageTypes.Gross.{YYYY}.json",
+    "Regulation/{CC}.{RegulationName}.WageTypes.Deductions.{YYYY}.json",
+    "Regulation/{CC}.{RegulationName}.WageTypes.Employer.{YYYY}.json"
   ]
 }

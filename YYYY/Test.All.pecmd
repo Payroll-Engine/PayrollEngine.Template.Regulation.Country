@@ -1,1 +1,15 @@
-PayrunEmployeeTest Tests/TC01/TC01-BaseSalary.et.json
+### Phase 1 — Guards (no dependencies; run first) ###
+PayrunEmployeeTest Tests/GUARD-TC{n}-{CC}-{Scope}/GUARD-TC{n}-{CC}-{Scope}-{YYYY}.et.json
+
+### Phase 2 — Technical (contribution base) ###
+
+### Phase 3 — Gross ###
+PayrunEmployeeTest Tests/WT-TC{nn}-{CC}-{Scope}/WT-TC{nn}-{CC}-{Scope}-{YYYY}.et.json
+
+### Phase 4 — Deductions ###
+
+### Phase 5 — Net ###
+
+### Phase 6 — Employer ###
+
+### Last Phase — Company Case setters (run last, prevent contamination) ###

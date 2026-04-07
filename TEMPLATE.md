@@ -63,6 +63,18 @@ YYYY/Tests/CC.Test.CompanyCases.json        → 2026/Tests/DE.Test.CompanyCases.
 Test.YYYY.pecmd                              → Test.2026.pecmd
 ```
 
+Rename test folders (replace `{CC}`, `{nn}`, `{Scope}` with actual values):
+```
+YYYY/Tests/WT-TC{nn}-{CC}-{Scope}/         → 2026/Tests/WT-TC1000-DE-BaseSalary/
+YYYY/Tests/GUARD-TC{n}-{CC}-{Scope}/       → 2026/Tests/GUARD-TC1-DE-MandatoryFields/
+```
+
+Rename script files (replace `{Scope}` and `{Domain}` with actual domain names):
+```
+YYYY/Scripts/WageTypeValueFunction.{Scope}.Action.cs  → 2026/Scripts/WageTypeValueFunction.Gross.Action.cs
+YYYY/Scripts/{CC}{Domain}Algorithm.cs                 → 2026/Scripts/DE{Domain}Algorithm.cs
+```
+
 Update `.sln`: replace `YYYY` folder references and `.csproj` filenames throughout.
 
 ### 3. Configure `YYYY/Directory.Build.props`
@@ -80,8 +92,26 @@ Update `.sln`: replace `YYYY` folder references and `.csproj` filenames througho
 ```
 
 ### 5. Configure `YYYY/regulation-package.json`
-Update `packageId`, `regulationName`, and `installFiles` order.
-Scripts must be listed before Cases and WageTypes.
+Update `packageId`, `regulationName`, and `installFiles`.
+
+Scripts must be listed **before** Cases and WageTypes (PE processes files in order).
+
+Split Cases and WageTypes into separate files by domain:
+```json
+"installFiles": [
+  "Regulation/{CC}.{RegulationName}.{YYYY}.json",
+  "Regulation/{CC}.{RegulationName}.Scripts.{YYYY}.json",
+  "Regulation/{CC}.{RegulationName}.Collectors.{YYYY}.json",
+  "Regulation/{CC}.{RegulationName}.Cases.Company.{YYYY}.json",
+  "Regulation/{CC}.{RegulationName}.Cases.Employee.Core.{YYYY}.json",
+  "Regulation/{CC}.{RegulationName}.WageTypes.Guard.{YYYY}.json",
+  "Regulation/{CC}.{RegulationName}.WageTypes.Gross.{YYYY}.json",
+  "Regulation/{CC}.{RegulationName}.WageTypes.Deductions.{YYYY}.json",
+  "Regulation/{CC}.{RegulationName}.WageTypes.Employer.{YYYY}.json"
+]
+```
+
+Add further `Cases.Employee.{Scope}` or `WageTypes.{Scope}` splits as needed.
 
 ### 6. Configure `YYYY/Regulation.CC.RegulationName.YYYY.csproj`
 Update `PackageId`, `Description`, and `PackageTags`.
@@ -107,28 +137,73 @@ Copy `PayrollEngine.Exchange.schema.json` into:
 ### 10. Create `YYYY/Docs/`
 Add analysis and design documentation:
 ```
-YYYY/Docs/{CC}.{RegulationName}-Analysis.md      — system analysis, regulation overview
-YYYY/Docs/{CC}.{RegulationName}-NoCodeDesign.md  — No-Code/Low-Code action specification
-YYYY/Docs/{CC}.{RegulationName}-TestSpec.md      — test case calculations with source references
+YYYY/Docs/{CC}.{RegulationName}-Analysis.md        — system analysis, regulation overview
+YYYY/Docs/{CC}.{RegulationName}-NoCodeDesign.md    — No-Code/Low-Code action specification
+YYYY/Docs/{CC}.{RegulationName}-TestSpec.md        — test case calculations with source references
+YYYY/Docs/{CC}.{RegulationName}-UpdateWorkflow.md  — year-over-year update process
 ```
 
 ### 11. Implement regulation objects
 Follow the [Country Bootstrap Guide](https://github.com/Payroll-Engine/Regulation.COM.Base/blob/main/Docs/Country-Bootstrap.md).
 
 Implement JSON files in `YYYY/Regulation/`:
-- `{CC}.{RegulationName}.{YYYY}.json` — regulation definition (name, attributes)
-- `{CC}.{RegulationName}.Scripts.{YYYY}.json` — script references
+- `{CC}.{RegulationName}.{YYYY}.json` — regulation definition (name, namespace, validFrom)
+- `{CC}.{RegulationName}.Scripts.{YYYY}.json` — script registrations (see Step 11a)
 - `{CC}.{RegulationName}.Collectors.{YYYY}.json` — collector definitions
-- `{CC}.{RegulationName}.Cases.{YYYY}.json` — employee + company case definitions
-- `{CC}.{RegulationName}.WageTypes.{YYYY}.json` — wage type definitions with actions
+- `{CC}.{RegulationName}.Cases.Company.{YYYY}.json` — company case definitions
+- `{CC}.{RegulationName}.Cases.Employee.Core.{YYYY}.json` — core employee cases
+- `{CC}.{RegulationName}.Cases.Employee.{Scope}.{YYYY}.json` — additional employee case splits
+- `{CC}.{RegulationName}.WageTypes.Guard.{YYYY}.json` — guard WTs (WT 1–9)
+- `{CC}.{RegulationName}.WageTypes.Gross.{YYYY}.json` — gross income WTs
+- `{CC}.{RegulationName}.WageTypes.Deductions.{YYYY}.json` — employee deduction WTs
+- `{CC}.{RegulationName}.WageTypes.Employer.{YYYY}.json` — employer cost WTs
 
 Implement data file in `Data.Tax.YYYY/Regulation/`:
 - `{CC}.{RegulationName}.Data.Tax.{YYYY}.json` — tax brackets and rates as lookups
 
-### 12. Update `YYYY/Tests/TC01/TC01-BaseSalary.et.json`
-Replace case field names with actual field names from your regulation.
-Calculate and fill in the expected `wageTypeResults` and `collectorResults`.
-Document the derivation in `YYYY/Tests/TC01/README.md`.
+### 11a. Register scripts in `Scripts.{YYYY}.json`
+
+Every `.cs` file in `YYYY/Scripts/` must be registered in
+`{CC}.{RegulationName}.Scripts.{YYYY}.json`. The order matters:
+**Shared → Guard → domain Actions → CaseValidate → Algorithms**
+
+```json
+{ "name": "WageTypeValue.Shared",  "functionTypes": ["WageTypeValue"], "valueFile": "../Scripts/WageTypeValueFunction.Shared.Action.cs" },
+{ "name": "WageTypeValue.Guard",   "functionTypes": ["WageTypeValue"], "valueFile": "../Scripts/WageTypeValueFunction.Guard.Action.cs" },
+{ "name": "WageTypeValue.{Scope}", "functionTypes": ["WageTypeValue"], "valueFile": "../Scripts/WageTypeValueFunction.{Scope}.Action.cs" },
+{ "name": "CaseValidate",          "functionTypes": ["CaseValidate"],  "valueFile": "../Scripts/CaseValidateFunction.Action.cs" },
+{ "name": "Algorithm.{CC}{Domain}Algorithm", "functionTypes": ["WageTypeValue"], "valueFile": "../Scripts/{CC}{Domain}Algorithm.cs" }
+```
+
+Unregistered scripts are silently ignored by PE — a missing entry causes
+all actions defined in that file to return `0` with no error.
+
+### 12. Implement test cases
+
+**TC naming conventions (non-negotiable):**
+```
+Wage type tests:   WT-TC{nn}-{CC}-{Scope}     e.g. WT-TC1000-DE-BaseSalary
+Guard tests:       GUARD-TC{n}-{CC}-{Scope}   e.g. GUARD-TC1-DE-MandatoryFields
+```
+
+Each TC lives in its own folder:
+```
+YYYY/Tests/WT-TC{nn}-{CC}-{Scope}/
+  WT-TC{nn}-{CC}-{Scope}-{YYYY}.et.json    — payrun employee test
+  WT-TC{nn}-{CC}-{Scope}.pecmd             — single-TC runner
+  README.md                                — purpose, scenario, derivation
+```
+
+For guard TCs the expected result is always empty:
+```json
+"wageTypeResults": [],
+"collectorResults": []
+```
+
+Document the full derivation (formula + statutory source) in each TC's `README.md`.
+
+Update `YYYY/Test.All.pecmd` with all TCs grouped by phase (Guards first,
+Company Case setters last — see `YYYY/Tests/README.md`).
 
 ### 13. First release
 Remove `.dev` suffix in `YYYY/Directory.Build.props`:

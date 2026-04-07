@@ -1,0 +1,55 @@
+{
+  "$schema": "../../Schemas/PayrollEngine.Exchange.schema.json",
+  "createdObjectDate": "{YYYY}-01-01T00:00:00.0Z",
+  "tenants": [
+    {
+      "identifier": "{CC}.{RegulationName}",
+      "updateMode": "NoUpdate",
+      "payrolls": [
+        {
+          "name": "{CC}.Payroll",
+          "updateMode": "NoUpdate",
+          "cases": [
+            {
+              "userIdentifier": "{cc}.test@{cc}.test",
+              "employeeIdentifier": "test.employee@{cc}.test",
+              "divisionName": "{CC}.Division",
+              "case": {
+                "caseName": "{CC}.Salary",
+                "values": [
+                  {
+                    "caseFieldName": "{CC}.BaseSalary",
+                    "value": "3000",
+                    "start": "{YYYY}-01-01T00:00:00.0Z",
+                    "created": "{YYYY}-01-01T00:10:00.0Z"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "payrunJobInvocations": [
+        {
+          "name": "{CC}.GUARD-TC{n}",
+          "payrunName": "{CC}.Payrun",
+          "userIdentifier": "{cc}.test@{cc}.test",
+          "completedJobStatus": "Complete",
+          "periodStart": "{YYYY}-01-01T00:00:00.0Z",
+          "evaluationDate": "{YYYY}-02-01T00:00:00.0Z",
+          "reason": "GUARD-TC{n} - {Description of guard condition}",
+          "storeEmptyResults": true,
+          "employeeIdentifiers": [ "test.employee@{cc}.test" ]
+        }
+      ],
+      "payrollResults": [
+        {
+          "payrunJobName": "{CC}.GUARD-TC{n}",
+          "employeeIdentifier": "test.employee@{cc}.test",
+          "wageTypeResults": [],
+          "collectorResults": []
+        }
+      ]
+    }
+  ]
+}

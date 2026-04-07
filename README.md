@@ -57,23 +57,31 @@ the calculation logic itself changes.
 Regulation.{CC}.{Name}/
   {Year}/
     Regulation/
-      {CC}.{Name}.Cases.{Year}.json
-      {CC}.{Name}.Collectors.{Year}.json
+      {CC}.{Name}.{Year}.json
       {CC}.{Name}.Scripts.{Year}.json
-      {CC}.{Name}.WageTypes.{Year}.json
+      {CC}.{Name}.Collectors.{Year}.json
+      {CC}.{Name}.Cases.Company.{Year}.json
+      {CC}.{Name}.Cases.Employee.Core.{Year}.json
+      {CC}.{Name}.Cases.Employee.{Scope}.{Year}.json    (optional: additional splits)
+      {CC}.{Name}.WageTypes.Guard.{Year}.json
+      {CC}.{Name}.WageTypes.Gross.{Year}.json
+      {CC}.{Name}.WageTypes.Deductions.{Year}.json
+      {CC}.{Name}.WageTypes.Employer.{Year}.json
     Scripts/
-      WageTypeValueFunction.Action.cs   Custom actions (WageTypeValueAction)
-      CaseValidateFunction.Action.cs    Custom actions (CaseValidateAction)
-      {CC}{Helper1}.cs                  {Description} (also unit-tested)
-      {CC}{Helper2}.cs                  {Description}
+      WageTypeValueFunction.Shared.Action.cs    Shared helper methods (no action attributes)
+      WageTypeValueFunction.Guard.Action.cs     Guard actions (WT 1–9)
+      WageTypeValueFunction.{Scope}.Action.cs   Domain actions (Gross, Deductions, Employer, …)
+      CaseValidateFunction.Action.cs            CaseValidate actions
+      {CC}{Domain}Algorithm.cs                  Pure algorithm classes (unit-testable)
     Tests/
       {CC}.Test.Setup.json
       {CC}.Test.CompanyCases.json
-      Tests/                            Individual test cases (WT-TC*, GUARD-TC*)
-    Tests.Unit/                         xUnit unit tests for algorithm classes
+      WT-TC{nn}-{CC}-{Scope}/                   Wage type test cases
+      GUARD-TC{n}-{CC}-{Scope}/                 Guard test cases
+    Tests.Unit/                                 xUnit tests for algorithm classes
     Reports/
-      {ReportFolder1}/
-      {ReportFolder2}/
+      {ReportFolder}/
+    README.md
     Setup.pecmd
     Test.All.pecmd
   Data.{Source1}.{Year}/
@@ -121,19 +129,26 @@ Regulation.{CC}.{Name}/
 
 ## Custom Actions
 
-### WageType Actions (`Scripts/WageTypeValueFunction.Action.cs`)
+### WageType Actions
+
+Actions are split across domain files in `Scripts/`:
+
+| File | Scope | Description |
+|:---|:---|:---|
+| `WageTypeValueFunction.Guard.Action.cs` | Guards (WT 1–9) | Abort on missing fields/lookups |
+| `WageTypeValueFunction.Shared.Action.cs` | Helpers | Private methods, no action attributes |
+| `WageTypeValueFunction.{Scope}.Action.cs` | Domain | Replace with actual domain name |
 
 | Action | WT | Description |
 |:---|---:|:---|
-| `{CC}GuardMandatoryFields` | 1 | Validates {Field1} > 0, {Field2} set; aborts on failure |
-| `{ActionName}` | {nr} | {short description} |
+| `{CC}GuardMandatoryFields` | 1 | Validates {Field1} > 0, {Field2} set, Lookup[{Year}] exists; AbortExecution on failure |
+| `{CC}Calculate{WageTypeName}` | {nr} | {short description} |
 
 ### Case Validate Actions (`Scripts/CaseValidateFunction.Action.cs`)
 
 | Action | Case | Description |
 |:---|:---|:---|
-| `{ValidateAction1}` | `{CC}.{Case1}` | {short description} |
-| `{ValidateAction2}` | `{CC}.{Case2}` | {short description} |
+| `{CC}ValidateNationalId` | `{CC}.{Case1}` | {short description} |
 
 ---
 

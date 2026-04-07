@@ -1,0 +1,48 @@
+{
+  "$schema": "../Schemas/PayrollEngine.Exchange.schema.json",
+  "createdObjectDate": "{YYYY}-01-01T00:00:00.0Z",
+  "tenants": [
+    {
+      "identifier": "{CC}.{RegulationName}",
+      "regulations": [
+        {
+          "name": "{CC}.{RegulationName}",
+          "updateMode": "NoUpdate",
+          "validFrom": "{YYYY}-01-01T00:00:00Z",
+          "scripts": [
+            {
+              "name": "WageTypeValue.Shared",
+              "functionTypes": [ "WageTypeValue" ],
+              "valueFile": "../Scripts/WageTypeValueFunction.Shared.Action.cs",
+              "clusters": [ "{CC}" ]
+            },
+            {
+              "name": "WageTypeValue.Guard",
+              "functionTypes": [ "WageTypeValue" ],
+              "valueFile": "../Scripts/WageTypeValueFunction.Guard.Action.cs",
+              "clusters": [ "{CC}" ]
+            },
+            {
+              "name": "WageTypeValue.{Scope}",
+              "functionTypes": [ "WageTypeValue" ],
+              "valueFile": "../Scripts/WageTypeValueFunction.{Scope}.Action.cs",
+              "clusters": [ "{CC}" ]
+            },
+            {
+              "name": "CaseValidate",
+              "functionTypes": [ "CaseValidate" ],
+              "valueFile": "../Scripts/CaseValidateFunction.Action.cs",
+              "clusters": [ "{CC}" ]
+            },
+            {
+              "name": "Algorithm.{CC}{Domain}Algorithm",
+              "functionTypes": [ "WageTypeValue" ],
+              "valueFile": "../Scripts/{CC}{Domain}Algorithm.cs",
+              "clusters": [ "{CC}" ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
