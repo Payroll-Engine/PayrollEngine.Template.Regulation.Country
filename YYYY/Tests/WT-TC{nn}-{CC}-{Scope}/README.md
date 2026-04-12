@@ -1,46 +1,46 @@
-# WT-TC{nn}-{CC}-{Scope}
+# {TC-Folder-Name} — {Short Title}
+
+**Type:** ET &nbsp;|&nbsp; **WT:** {nr} `{WTName}`
 
 ## Purpose
 
-{One sentence: what calculation path or statutory rule this TC verifies.}
-
-Without this test, a regression in {WT name} would silently produce wrong results
-for {description of the affected scenario}.
+{1–2 sentences. What this TC verifies, and why it matters.
+Name any cross-references: e.g. "Pair with WT-TC{nn}-{CC}-{OtherScope} (same salary,
+different contract type) for contrast."}
 
 ## Scenario
 
 | Parameter | Value |
 |:---|:---|
-| `{CC}.{BaseSalaryField}` | {Value} |
-| `{CC}.ContractType` | {ContractType} |
-| `{CC}.TaxClass` | {TaxClass} |
-| Period | {Month} {YYYY} |
+| {Input field 1} | {value} |
+| {Input field 2} | {value} |
+| Period | {Month YYYY} (full) |
 
 ## Expected Results
 
-| WageType | Name | Expected |
+| WT | Name | Value |
 |---:|:---|---:|
-| 1000 | BaseSalary | {value} |
-| 5100 | TaxWithheld | {value} |
-| 6500 | NetPay | {value} |
+| {nn} | **{WTName}** | **{value}** |
 
-| Collector | Expected |
+> Include all WTs that appear in the payrollResults assertion, not just the primary WT.
+> Bold the primary WT being tested.
+
+| Collector | Value |
 |:---|---:|
-| `{CC}.GrossIncome` | {value} |
-| `{CC}.Deductions` | {value} |
+| `{CC}.{GrossCollector}` | {value} |
+| `{CC}.{DeductionsCollector}` | {value} |
 
 ## Calculation
 
 ```
-{FieldName}:   {value}
-{Formula}:     {step-by-step calculation}
-{Result}:      {final value}
+{step-by-step derivation using exact statutory formula}
+{e.g. CuotaCC = BaseCotizacion × 4.70% = 3,500 × 4.70% = 164.50}
 ```
 
-> Source: {Statutory reference — law / ordinance / publication}
+Source: {Authority} — {Article / Publication name / Date}
 
 ## Run
 
 ```
-WT-TC{nn}-{CC}-{Scope}.pecmd
+{TC-Folder-Name}.pecmd
 ```
