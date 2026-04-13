@@ -82,7 +82,6 @@ YYYY/Docs/{CC}.{RegulationName}-Design.md         → 2026/Docs/DE.Lohnsteuer-De
 YYYY/Docs/{CC}.{RegulationName}-Actions.md        → 2026/Docs/DE.Lohnsteuer-Actions.md
 YYYY/Docs/{CC}.{RegulationName}-UseCases.md       → 2026/Docs/DE.Lohnsteuer-UseCases.md
 YYYY/Docs/{CC}.{RegulationName}-UncoveredCases.md → 2026/Docs/DE.Lohnsteuer-UncoveredCases.md
-YYYY/Docs/{CC}.{RegulationName}-Tests.md          → 2026/Docs/DE.Lohnsteuer-Tests.md
 YYYY/Docs/{CC}.{RegulationName}-Maintenance.md    → 2026/Docs/DE.Lohnsteuer-Maintenance.md
 YYYY/Docs/{CC}.{RegulationName}-ProviderStubs.md  → 2026/Docs/DE.Lohnsteuer-ProviderStubs.md
 YYYY/Docs/{CC}.{RegulationName}-Compliance.md     → 2026/Docs/DE.Lohnsteuer-Compliance.md
@@ -148,7 +147,7 @@ Copy `PayrollEngine.Exchange.schema.json` into:
 - `Data.Tax.YYYY/Schemas/`
 
 ### 10. Fill in `YYYY/Docs/`
-The 9 standard shell documents are already present in `YYYY/Docs/`. Fill in all `{…}`
+The 8 standard shell documents are already present in `YYYY/Docs/`. Fill in all `{…}`
 placeholders with actual regulation content. See `YYYY/Docs/README.md` for the
 document index and relationships.
 
@@ -158,11 +157,14 @@ YYYY/Docs/{CC}.{RegulationName}-Design.md         — architecture, regulation s
 YYYY/Docs/{CC}.{RegulationName}-Actions.md        — No-Code / Low-Code action specification with formulas
 YYYY/Docs/{CC}.{RegulationName}-UseCases.md       — provider use cases: setup, payrun, case availability
 YYYY/Docs/{CC}.{RegulationName}-UncoveredCases.md — uncovered statutory cases: Tier A/B/C classification
-YYYY/Docs/{CC}.{RegulationName}-Tests.md          — test case derivations with statutory source references
 YYYY/Docs/{CC}.{RegulationName}-Maintenance.md    — year-over-year update workflow and release checklist
 YYYY/Docs/{CC}.{RegulationName}-ProviderStubs.md  — stub WageTypes, override instructions, approximations
 YYYY/Docs/{CC}.{RegulationName}-Compliance.md     — certification status, filing obligations, statutory scope
 ```
+
+Test documentation lives in the test suite, not in `Docs/`:
+- `YYYY/Tests/README.md` — test index grouped by topic, with links and short descriptions per TC
+- `YYYY/Tests/<TC>/README.md` — full test description: purpose, scenario, expected results, derivation
 
 ### 11. Implement regulation objects
 Follow the [Country Bootstrap Guide](https://github.com/Payroll-Engine/Regulation.COM.Base/blob/main/Docs/Country-Bootstrap.md).
@@ -212,7 +214,7 @@ Each TC lives in its own folder:
 YYYY/Tests/WT-TC{nn}-{CC}-{Scope}/
   WT-TC{nn}-{CC}-{Scope}-{YYYY}.et.json    — payrun employee test
   WT-TC{nn}-{CC}-{Scope}.pecmd             — single-TC runner
-  README.md                                — purpose, scenario, derivation
+  README.md                                — purpose, scenario, expected results, derivation
 ```
 
 For guard TCs the expected result is always empty:
@@ -223,8 +225,10 @@ For guard TCs the expected result is always empty:
 
 Document the full derivation (formula + statutory source) in each TC's `README.md`.
 
+`YYYY/Tests/README.md` lists all TCs grouped by topic, with links and a short description per TC.
+
 Update `YYYY/Test.All.pecmd` with all TCs grouped by phase (Guards first,
-Company Case setters last — see `YYYY/Tests/README.md`).
+Company Case setters last).
 
 ### 13. First release
 Remove `.dev` suffix in `YYYY/Directory.Build.props`:

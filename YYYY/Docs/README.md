@@ -4,7 +4,7 @@ Year-specific regulation documents for `{YYYY}`.
 
 ---
 
-## Standard Documents (9)
+## Standard Documents (8)
 
 | File | Content | Required |
 |:---|:---|:---:|
@@ -13,10 +13,20 @@ Year-specific regulation documents for `{YYYY}`.
 | `{CC}.{RegulationName}-Actions.md` | No-Code / Low-Code action specification with formulas | ✓ |
 | `{CC}.{RegulationName}-UseCases.md` | Provider use cases: setup, payrun, case availability, special scenarios | ✓ |
 | `{CC}.{RegulationName}-UncoveredCases.md` | Uncovered statutory cases: Tier A/B/C classification | ✓ |
-| `{CC}.{RegulationName}-Tests.md` | Test case derivations with statutory source references | ✓ |
 | `{CC}.{RegulationName}-Maintenance.md` | Annual update workflow and release checklist | ✓ |
 | `{CC}.{RegulationName}-ProviderStubs.md` | Stub WageTypes, override instructions, approximations | ✓ |
 | `{CC}.{RegulationName}-Compliance.md` | Certification status, filing obligations, statutory scope | ✓ |
+
+---
+
+## Test Documentation
+
+Test documentation lives outside `Docs/` — in the test suite itself:
+
+| Location | Content |
+|:---|:---|
+| `Tests/README.md` | Test index grouped by topic, with links and short descriptions per TC |
+| `Tests/<TC>/README.md` | Full test description: purpose, scenario, expected results, calculation derivation, run command |
 
 ---
 
@@ -33,7 +43,6 @@ Design.md           ←  architecture, regulation split, scope
                         (incl. case availability and onboarding)
 
 UncoveredCases.md   ←  what is NOT in the regulation and why
-Tests.md            ←  expected values derived from statutory tables
 Maintenance.md      ←  annual update workflow + release checklist
 ProviderStubs.md    ←  extension points for provider/employer layers
 Compliance.md       ←  certification, filing obligations, data retention
