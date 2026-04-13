@@ -1,36 +1,34 @@
-# CHANGELOG — {CC}.{RegulationName}
+# CHANGELOG — PayrollEngine.Template.Regulation.Country
 
-All notable changes to this regulation are documented in this file.
-
-Each entry corresponds to a regulation release (functional or data sub-project).
-A new release is only created when the content has changed — unchanged sub-projects
-carry no new release.
+All notable changes to this template are documented in this file.
 
 ---
 
-## [{CC}.{RegulationName}.{YYYY}] — {YYYY}-01-01
+## [1.4.0] — 2026-04-13
 
-### Initial release
+### Documentation structure
+- docs schema expanded from 7 to 9 standard documents: ProviderStubs and Compliance added
+- `ProviderStubs.md` moved from root `Docs/` to `YYYY/Docs/` (year-specific)
+- `{CC}.{RegulationName}-Compliance.md` shell added to `YYYY/Docs/`
+- `YYYY/Docs/README.md` updated with full 9-document index and relationships
+- `Docs/README.md` simplified — root Docs/ no longer contains standard documents
+- `TEMPLATE.md` Step 2 extended with doc file rename instructions
+- `TEMPLATE.md` Step 10 updated to list all 9 standard documents
 
-Full implementation of the {CC} {RegulationName} regulation for payroll year {YYYY}.
+---
 
-**Scope:**
+## [1.3.0] — 2026-04-13
 
-| Component | Description |
-|---|---|
-| BaseSalary with prorata | Calendar-day prorata via Indienst/Uitdienst (WT 10 + WT 1000) |
-| TaxWithheld | Annual projection via TaxParameter lookup |
-| NetPay | GrossIncome − Deductions |
-| NationalId validation | Checksum validation |
+### Documentation structure
+- `YYYY/Docs/` extended with seven standard shell documents: Model, Design, Actions, UseCases, UncoveredCases, Tests, Maintenance
+- `YYYY/Docs/README.md` updated with document index, naming convention, and relationships
+- `TEMPLATE.md` Step 10 updated to reference the seven standard documents
 
-**Cases (Employee):** `{CC}.Salary`, `{CC}.Personal`, `{CC}.Employment`
+---
 
-**Cases (Company):** `{CC}.Configuration`
+## [1.2.0] — prior
 
-**Collectors:** `{CC}.GrossIncome`, `{CC}.Deductions`, `{CC}.EmployerCost`
-
-### Data — Initial statutory parameters {YYYY}
-
-| Sub-project | Content | Source | Update Cycle |
-|---|---|---|---|
-| `{CC}.{RegulationName}.Data.Tax` | Tax brackets and rates | Official statutory source | Annual |
+### Documentation structure
+- initial `YYYY/Docs/README.md` with Analysis, NoCodeDesign, TestSpec, UpdateWorkflow listing
+- `Docs/ProviderStubs.md` shell added (root, timeless)
+- `Docs/README.md` with root vs. year-specific distinction

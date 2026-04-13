@@ -75,6 +75,19 @@ YYYY/Scripts/WageTypeValueFunction.{Scope}.Action.cs  → 2026/Scripts/WageTypeV
 YYYY/Scripts/{CC}{Domain}Algorithm.cs                 → 2026/Scripts/DE{Domain}Algorithm.cs
 ```
 
+Rename doc files (replace `{CC}`, `{RegulationName}`, `{Month}`, `{YYYY}` with actual values):
+```
+YYYY/Docs/{CC}.{RegulationName}-Model.md          → 2026/Docs/DE.Lohnsteuer-Model.md
+YYYY/Docs/{CC}.{RegulationName}-Design.md         → 2026/Docs/DE.Lohnsteuer-Design.md
+YYYY/Docs/{CC}.{RegulationName}-Actions.md        → 2026/Docs/DE.Lohnsteuer-Actions.md
+YYYY/Docs/{CC}.{RegulationName}-UseCases.md       → 2026/Docs/DE.Lohnsteuer-UseCases.md
+YYYY/Docs/{CC}.{RegulationName}-UncoveredCases.md → 2026/Docs/DE.Lohnsteuer-UncoveredCases.md
+YYYY/Docs/{CC}.{RegulationName}-Tests.md          → 2026/Docs/DE.Lohnsteuer-Tests.md
+YYYY/Docs/{CC}.{RegulationName}-Maintenance.md    → 2026/Docs/DE.Lohnsteuer-Maintenance.md
+YYYY/Docs/{CC}.{RegulationName}-ProviderStubs.md  → 2026/Docs/DE.Lohnsteuer-ProviderStubs.md
+YYYY/Docs/{CC}.{RegulationName}-Compliance.md     → 2026/Docs/DE.Lohnsteuer-Compliance.md
+```
+
 Update `.sln`: replace `YYYY` folder references and `.csproj` filenames throughout.
 
 ### 3. Configure `YYYY/Directory.Build.props`
@@ -134,13 +147,21 @@ Copy `PayrollEngine.Exchange.schema.json` into:
 - `YYYY/Schemas/`
 - `Data.Tax.YYYY/Schemas/`
 
-### 10. Create `YYYY/Docs/`
-Add analysis and design documentation:
+### 10. Fill in `YYYY/Docs/`
+The 9 standard shell documents are already present in `YYYY/Docs/`. Fill in all `{…}`
+placeholders with actual regulation content. See `YYYY/Docs/README.md` for the
+document index and relationships.
+
 ```
-YYYY/Docs/{CC}.{RegulationName}-Analysis.md        — system analysis, regulation overview
-YYYY/Docs/{CC}.{RegulationName}-NoCodeDesign.md    — No-Code/Low-Code action specification
-YYYY/Docs/{CC}.{RegulationName}-TestSpec.md        — test case calculations with source references
-YYYY/Docs/{CC}.{RegulationName}-UpdateWorkflow.md  — year-over-year update process
+YYYY/Docs/{CC}.{RegulationName}-Model.md          — collectors, WageType matrix, cases, lookups, reports
+YYYY/Docs/{CC}.{RegulationName}-Design.md         — architecture, regulation split, design decisions, scope
+YYYY/Docs/{CC}.{RegulationName}-Actions.md        — No-Code / Low-Code action specification with formulas
+YYYY/Docs/{CC}.{RegulationName}-UseCases.md       — provider use cases: setup, payrun, case availability
+YYYY/Docs/{CC}.{RegulationName}-UncoveredCases.md — uncovered statutory cases: Tier A/B/C classification
+YYYY/Docs/{CC}.{RegulationName}-Tests.md          — test case derivations with statutory source references
+YYYY/Docs/{CC}.{RegulationName}-Maintenance.md    — year-over-year update workflow and release checklist
+YYYY/Docs/{CC}.{RegulationName}-ProviderStubs.md  — stub WageTypes, override instructions, approximations
+YYYY/Docs/{CC}.{RegulationName}-Compliance.md     — certification status, filing obligations, statutory scope
 ```
 
 ### 11. Implement regulation objects

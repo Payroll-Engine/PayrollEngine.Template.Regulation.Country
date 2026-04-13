@@ -1,15 +1,56 @@
 # Docs — {CC}.{RegulationName} {YYYY}
 
-Year-specific regulation documents for `{YYYY}`. For regulation-wide timeless
-documents (provider stubs, country reference), see the root [`Docs/`](../Docs/).
+Year-specific regulation documents for `{YYYY}`.
 
-## Recommended files
+---
 
-| File | Content |
-|:---|:---|
-| `{CC}.{RegulationName}-Analysis.md` | Regulation analysis: statutory rules, design decisions, scope, known limitations |
-| `{CC}.{RegulationName}-NoCodeDesign.md` | No-Code / Low-Code action specification with formulas and decision table |
-| `{CC}.{RegulationName}-TestSpecification.md` | Test case calculations with statutory source references and expected values |
-| `{CC}.{RegulationName}-PracticalTest.md` | Step-by-step manual test guide: setup commands, payrun execution, result verification |
-| `{CC}.{RegulationName}-Reports.md` | Report specification: output columns, data sources, filter parameters |
-| `{CC}.{RegulationName}-UncoveredCases.md` | Uncovered statutory cases: deferred implementation, known approximations, Tier-C edge cases |
+## Standard Documents (9)
+
+| File | Content | Required |
+|:---|:---|:---:|
+| `{CC}.{RegulationName}-Model.md` | Collectors, WageType matrix, cases, lookups, reports | ✓ |
+| `{CC}.{RegulationName}-Design.md` | Architecture, regulation split, design decisions, scope | ✓ |
+| `{CC}.{RegulationName}-Actions.md` | No-Code / Low-Code action specification with formulas | ✓ |
+| `{CC}.{RegulationName}-UseCases.md` | Provider use cases: setup, payrun, case availability, special scenarios | ✓ |
+| `{CC}.{RegulationName}-UncoveredCases.md` | Uncovered statutory cases: Tier A/B/C classification | ✓ |
+| `{CC}.{RegulationName}-Tests.md` | Test case derivations with statutory source references | ✓ |
+| `{CC}.{RegulationName}-Maintenance.md` | Annual update workflow and release checklist | ✓ |
+| `{CC}.{RegulationName}-ProviderStubs.md` | Stub WageTypes, override instructions, approximations | ✓ |
+| `{CC}.{RegulationName}-Compliance.md` | Certification status, filing obligations, statutory scope | ✓ |
+
+---
+
+## Document Relationships
+
+```
+Design.md           ←  architecture, regulation split, scope
+  │
+  ├── Model.md      ←  WageType matrix, collectors, cases, lookups, reports
+  │
+  ├── Actions.md    ←  No-Code wrappers + Low-Code script specifications
+  │
+  └── UseCases.md   ←  provider workflows using Model + Actions
+                        (incl. case availability and onboarding)
+
+UncoveredCases.md   ←  what is NOT in the regulation and why
+Tests.md            ←  expected values derived from statutory tables
+Maintenance.md      ←  annual update workflow + release checklist
+ProviderStubs.md    ←  extension points for provider/employer layers
+Compliance.md       ←  certification, filing obligations, data retention
+```
+
+---
+
+## Naming Convention
+
+All files follow the pattern: `{CC}.{RegulationName}-{Topic}.md`
+
+The prefix makes files identifiable when viewed outside the repo context
+(search results, open editor tabs, file transfers).
+
+---
+
+## Root `Docs/`
+
+The root [`Docs/`](../Docs/) folder contains only the `README.md`.
+All regulation documentation is year-specific and lives here in `{YYYY}/Docs/`.
