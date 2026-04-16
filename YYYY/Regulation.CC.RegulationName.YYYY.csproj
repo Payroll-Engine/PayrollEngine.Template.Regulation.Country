@@ -54,7 +54,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="PayrollEngine.Client.Scripting" Version="0.10.0-beta.dev" />
+		<PackageReference Include="PayrollEngine.Client.Scripting" Version="$(PayrollEngineVersion)" />
 	</ItemGroup>
 
 	<ItemGroup>
