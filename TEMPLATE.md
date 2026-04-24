@@ -167,7 +167,7 @@ Test documentation lives in the test suite, not in `Docs/`:
 - `YYYY/Tests/<TC>/README.md` — full test description: purpose, scenario, expected results, derivation
 
 ### 11. Implement regulation objects
-Follow the [Country Bootstrap Guide](https://github.com/Payroll-Engine/Regulation.COM.Base/blob/main/Docs/Country-Bootstrap.md).
+Follow the [Country Bootstrap Guide](https://github.com/Payroll-Engine/Regulation.Consolidation/blob/main/Docs/Country-Bootstrap.md).
 
 Implement JSON files in `YYYY/Regulation/`:
 - `{CC}.{RegulationName}.{YYYY}.json` — regulation definition (name, namespace, validFrom)
@@ -184,7 +184,27 @@ Implement JSON files in `YYYY/Regulation/`:
 Implement data file in `Data.Tax.YYYY/Regulation/`:
 - `{CC}.{RegulationName}.Data.Tax.{YYYY}.json` — tax brackets and rates as lookups
 
-### 11a. Register scripts in `Scripts.{YYYY}.json`
+### 11a. Consolidation WageTypes (multi-country only)
+
+If the regulation participates in multi-country consolidation, add WageTypes
+7000–7030 with `clusters: ["Consolidation"]` to the WageTypes files.
+These read-back WTs are validated at payrun time by Guard WTs 8000–8030 in
+`Regulation.Consolidation`.
+
+```json
+{ "wageTypeNumber": 7000, "name": "TotalGross",               "clusters": ["Consolidation"], "valueActions": ["^${TotalGrossWT}"] },
+{ "wageTypeNumber": 7005, "name": "TaxEmployee",              "clusters": ["Consolidation"], "valueActions": ["..."] },
+{ "wageTypeNumber": 7010, "name": "TotalDeductionsEmployee",  "clusters": ["Consolidation"], "valueActions": ["..."] },
+{ "wageTypeNumber": 7015, "name": "SocialSecEmployee",        "clusters": ["Consolidation"], "valueActions": ["..."] },
+{ "wageTypeNumber": 7020, "name": "TotalEmployerBurdens",     "clusters": ["Consolidation"], "valueActions": ["..."] },
+{ "wageTypeNumber": 7025, "name": "NetIncome",                "clusters": ["Consolidation"], "valueActions": ["..."] },
+{ "wageTypeNumber": 7030, "name": "TotalEmployerCost",        "clusters": ["Consolidation"], "valueActions": ["..."] }
+```
+
+Store the original local name in `nameLocalizations` to avoid naming conflicts
+with existing WTs in the same regulation.
+
+### 11b. Register scripts in `Scripts.{YYYY}.json`
 
 Every `.cs` file in `YYYY/Scripts/` must be registered in
 `{CC}.{RegulationName}.Scripts.{YYYY}.json`. The order matters:

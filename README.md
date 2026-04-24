@@ -1,4 +1,4 @@
-# Regulation.{CC}.{Name}
+﻿# Regulation.{CC}.{Name}
 
 {Country} payroll regulation for **{Full Legal Name}** — {Year}.
 
@@ -120,10 +120,19 @@ Regulation.{CC}.{Name}/
 | 6500 | NettoLoon | | | | `^&{GrossCollector} − ^&{DeductionCollector}` |
 | 6700 | {EmployerWT1} | | | ✓ | `{ActionName}` — {short description} |
 | 6710 | {EmployerWT2} | | | ✓ | `{ActionName}` — {short description} |
+|| 7000 | TotalGross | | | | `clusters: ["Consolidation"]` — read-back: total gross |
+|| 7005 | TaxEmployee | | | | `clusters: ["Consolidation"]` — read-back: employee tax (negative) |
+|| 7010 | TotalDeductionsEmployee | | | | `clusters: ["Consolidation"]` — read-back: total employee deductions (negative) |
+|| 7015 | SocialSecEmployee | | | | `clusters: ["Consolidation"]` — read-back: employee social security (negative) |
+|| 7020 | TotalEmployerBurdens | | | | `clusters: ["Consolidation"]` — read-back: total employer burdens |
+|| 7025 | NetIncome | | | | `clusters: ["Consolidation"]` — read-back: net income |
+|| 7030 | TotalEmployerCost | | | | `clusters: ["Consolidation"]` — read-back: total employer cost |
 
 > **Notes:**
 > - WTs 1–{n} (Guards), {tech WTs}: no collector — runtime setters / control flow.
 > - WTs 5100–5120: no collector — intermediate values summed in WT 5130.
+> - WTs 7000–7030: Consolidation read-back WTs — `clusters: ["Consolidation"]`. Active only
+>   during consolidation payruns; validated by Guard WTs 8000–8030 in `Regulation.Consolidation`.
 
 ---
 
@@ -266,6 +275,6 @@ for the complete year-over-year update process ({key items: rates, brackets, cei
 ## See Also
 
 - [Payroll Engine](https://github.com/Payroll-Engine/PayrollEngine)
-- [Country Bootstrap Guide](https://github.com/Payroll-Engine/Regulation.COM.Base/blob/main/Docs/Country-Bootstrap.md)
+- [Country Bootstrap Guide](https://github.com/Payroll-Engine/Regulation.Consolidation/blob/main/Docs/Country-Bootstrap.md)
 - [Country Regulation Template](https://github.com/Payroll-Engine/PayrollEngine.Template.Regulation.Country)
 - [Regulation Deployment](https://payrollengine.org/concepts/regulation-deployment)
