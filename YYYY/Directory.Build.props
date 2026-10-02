@@ -1,6 +1,7 @@
 <Project>
 
 	<PropertyGroup>
+		<PayrollEngineVersion>1.1.0</PayrollEngineVersion>
 		<TargetFramework>net10.0</TargetFramework>
 		<Version>{YYYY}.1-beta.dev</Version>
 		<FileVersion>{YYYY}.1.0</FileVersion>
