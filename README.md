@@ -275,6 +275,6 @@ for the complete year-over-year update process ({key items: rates, brackets, cei
 ## See Also
 
 - [Payroll Engine](https://github.com/Payroll-Engine/PayrollEngine)
-- [Country Bootstrap Guide](https://github.com/Payroll-Engine/Regulation.Consolidation/blob/main/Docs/Country-Bootstrap.md)
+- [Country Bootstrap Guide](https://github.com/payrollex/Regulation.Consolidation/blob/main/Docs/Country-Bootstrap.md)
 - [Country Regulation Template](https://github.com/Payroll-Engine/PayrollEngine.Template.Regulation.Country)
 - [Regulation Deployment](https://payrollengine.org/concepts/regulation-deployment)

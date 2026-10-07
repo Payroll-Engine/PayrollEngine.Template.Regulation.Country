@@ -167,7 +167,7 @@ Test documentation lives in the test suite, not in `Docs/`:
 - `YYYY/Tests/<TC>/README.md` — full test description: purpose, scenario, expected results, derivation
 
 ### 11. Implement regulation objects
-Follow the [Country Bootstrap Guide](https://github.com/Payroll-Engine/Regulation.Consolidation/blob/main/Docs/Country-Bootstrap.md).
+Follow the [Country Bootstrap Guide](https://github.com/payrollex/Regulation.Consolidation/blob/main/Docs/Country-Bootstrap.md).
 
 Implement JSON files in `YYYY/Regulation/`:
 - `{CC}.{RegulationName}.{YYYY}.json` — regulation definition (name, namespace, validFrom)

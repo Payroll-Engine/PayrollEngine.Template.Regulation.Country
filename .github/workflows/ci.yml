@@ -17,7 +17,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # ── Read version — skip CI for .dev versions ──────────────────────────
       # .dev versions reference local packages (e.g. PayrollEngine.Client.Scripting
@@ -38,7 +38,7 @@ jobs:
 
       - name: Setup .NET
         if: steps.version.outputs.is_dev != 'true'
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
